@@ -8,6 +8,8 @@ from django.views.generic import (
     ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView)
 from django.urls import reverse
 
+from accounts.models import CustomUser
+from accounts.forms import CustomUserCreationForm, CustomUserForm
 
 
 class HomePage(TemplateView):
@@ -32,3 +34,29 @@ def csrf_failure(request, reason=''):
 
 def internal_server_error(request):
     return render(request, 'pages/500.html', status=404)
+
+
+def profile_view(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+    context = {
+        'user': user
+    }
+    return render(request, 'pages/profile.html', context)
+
+
+def edit_profile_view(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    if request.method == 'POST':
+        form = CustomUserForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('pages:profile', username=user.username)
+    else:
+        form = CustomUserForm(instance=user)
+
+    context = {
+        'form': form,
+        'user': user
+    }
+    return render(request, 'pages/edit_profile.html', context)
