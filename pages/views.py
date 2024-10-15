@@ -24,6 +24,9 @@ class RulesView(TemplateView):
     template_name = 'pages/rules.html'
 
 
+class AccountView(TemplateView):
+    template_name = 'pages/account.html'
+
 def page_not_found(request, exception):
     return render(request, 'pages/404.html', status=404)
 

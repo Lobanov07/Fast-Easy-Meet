@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}
+  Личный кабинет
+{% endblock %}
+{% block content %}
+  <style>
+  .card-body {
+  width: 195px;
+  height: 195px;
+  border: 1px solid black;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 145px;
+  left: 175px;
+  visibility:visible;
+  }
+  .round {
+    border-radius: 100px; /* радиус скругления */
+    box-shadow: 0 0 1px #666; /* Параметры тени */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    visibility:visible;
+  }
+  .profile_image_wrap {
+    background: #f9f8f8;
+    border-radius: 100px;
+    display: flex;
+    flex-shrink: 0;
+    justify-content: center;
+    margin-inline: auto;
+    overflow: hidden;
+    position: absolute;
+    text-align:center;
+  }
+  .sheet_button{
+  width: 800px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: rgb(135, 206, 235);
+  border: 1px solid rgb(51, 61, 100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  left: 490px;
+  top: 550px;
+}
+img{
+  max-width: 100%;
+}
+  </style>
+  
+ 
+  <div class="card-body">
+    <img alt="logo" src="/staticfiles/img/46162.jpg" class="profile_image_wrap">
+  </div>
+
+  <div class="round" style="position: absolute; left: 700px; top: 85px;border: 5px solid green;">
+  </div>
+  <div class="round" style=" position: absolute; left: 700px;border: 5px solid yellow;">
+  </div>
+  <div class="round" style=" position: absolute; left: 700px; top: 125px;border: 5px solid red;">
+  </div>
+  
+  <div class="card" style="width: 50rem; height: 30rem; position:absolute; top: 150px; left: 600px"> 
+    <div class="card-header">
+      <div align="center">Запланированнные встречи</div>
+    </div>
+  </div>
+<button class="sheet_button">Указать расписание</button>
+<div class="col d-flex justify-content-center" style="width: 40rem; height: 60rem;">
+</div>
+{% endblock %}  
