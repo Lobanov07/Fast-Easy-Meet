@@ -27,15 +27,18 @@ class RulesView(TemplateView):
 class AccountView(TemplateView):
     template_name = 'pages/account.html'
 
-<<<<<<< HEAD
 
 class AccountEdit(TemplateView):
     template_name = 'pages/edit_profile.html'
 
-=======
+
 class JointomeetView(TemplateView):
     template_name = 'pages/meetjoin.html'
->>>>>>> 36be28adea375df06d55a89f2b4959625ad19df1
+
+
+class OrganizationMeeting(TemplateView):
+    template_name = 'pages/organization_meeting.html'
+
 
 def page_not_found(request, exception):
     return render(request, 'pages/404.html', status=404)
