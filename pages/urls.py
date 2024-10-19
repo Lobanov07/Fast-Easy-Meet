@@ -8,5 +8,6 @@ urlpatterns = [
     path("pages/about/", views.AboutView.as_view(), name="about"),
     path("pages/rules/", views.RulesView.as_view(), name="rules"),
     path("", views.HomePage.as_view(), name="index"),
-    path("pages/account/", views.AccountView.as_view(), name="account")
+    path("pages/account/", views.AccountView.as_view(), name="account"),
+    path("pages/meetjoin/", views.JointomeetView.as_view(), name="meetjoin")
 ]

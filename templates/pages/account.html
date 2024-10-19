@@ -1,11 +1,25 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}
   Личный кабинет
 {% endblock %}
 {% block content %}
   <style>
-  .card-body {
-  width: 195px;
+     @counter-style marker-status {
+	system: cyclic;
+	symbols: "🟢" "🟠" "🔴";
+	suffix: " ";
+}
+.marker{
+  align-items: center;
+  justify-content: center;
+	list-style-type: marker-status;
+}
+.marker li {
+	font-size: 14px;
+}
+  .roundness {
+  width: 195px; 
   height: 195px;
   border: 1px solid black;
   border-radius: 100%;
@@ -18,8 +32,8 @@
   visibility:visible;
   }
   .round {
-    border-radius: 100px; /* радиус скругления */
-    box-shadow: 0 0 1px #666; /* Параметры тени */
+    border-radius: 100%; 
+    box-shadow: 0 0 1px #666; 
     align-items: center;
     display: flex;
     justify-content: center;
@@ -27,14 +41,13 @@
   }
   .profile_image_wrap {
     background: #f9f8f8;
-    border-radius: 100px;
+    border-radius: 100%;
     display: flex;
     flex-shrink: 0;
     justify-content: center;
     margin-inline: auto;
     overflow: hidden;
     position: absolute;
-    text-align:center;
   }
   .sheet_button{
   width: 800px;
@@ -45,9 +58,50 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  left: 490px;
-  top: 550px;
+  position: absolute;
+  left: 600px;
+  top: 700px;
+}
+.profile_info {
+    width: 300px;
+    height: 400px;
+    box-shadow: 0 0 1px #666;
+    text-align: center;
+    background: hsl(233, 56%, 62%);
+    -webkit-border-radius: 50px / 100px;
+    -moz-border-radius: 50px / 100px;
+    border-radius: 100px;
+    position: absolute;
+    top: 380px;
+    left: 130px;
+}
+.profile_button{
+  width: 200px;
+  height: 40px;
+  text-decoration: none;
+  border-radius: 50px;
+  background-color: rgb(186, 186, 186);
+  border: 1px solid rgb(51, 61, 100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute; 
+  top: 650px; 
+  left: 180px;
+}
+.profile_edit_button{
+  width: 200px;
+  height: 40px;
+  text-decoration: none;
+  border-radius: 20px;
+  background-color: rgb(135, 206, 235);
+  border: 1px solid rgb(51, 61, 100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute; 
+  top: 700px; 
+  left: 180px;
 }
 img{
   max-width: 100%;
@@ -55,23 +109,45 @@ img{
   </style>
   
  
-  <div class="card-body">
-    <img alt="logo" src="/staticfiles/img/46162.jpg" class="profile_image_wrap">
+  <div class="roundness" >
+    <img alt="logo" src="{% static  'img/aristo.png' %}"  class="profile_image_wrap">
   </div>
 
-  <div class="round" style="position: absolute; left: 700px; top: 85px;border: 5px solid green;">
+  <div class="profile_info">
+    <b>ФИО:</b><br>
+    <tr>Самый лучший челикс</tr><br>
+    <b>Дата рождения:</b><br>
+    <tr>01.01.0001</tr><br>
+    <b>Электронная почта:</b><br>
+    <tr>tirex@gg.ru</tr><br>
   </div>
-  <div class="round" style=" position: absolute; left: 700px;border: 5px solid yellow;">
-  </div>
-  <div class="round" style=" position: absolute; left: 700px; top: 125px;border: 5px solid red;">
-  </div>
+
+<button class="profile_button">
+    Узнать больше...
+</button>
+<button class="profile_edit_button">
+  Редактировать профиль
+</button>
+
+<ul class="marker" style="position: absolute; left: 600px; right: auto;">
+  <li>Запланированнные созвоны</li>
+  <li>Действующие созвоны</li>
+  <li>Завершённые созвоны</li>
+</ul>
   
-  <div class="card" style="width: 50rem; height: 30rem; position:absolute; top: 150px; left: 600px"> 
+  <div class="card" style="width: 50rem; height: 30rem; position:absolute; top: 200px; left: 600px"> 
     <div class="card-header">
       <div align="center">Запланированнные встречи</div>
     </div>
+    <p style="font-size: 14px;">🟢 <b>12:00 - 12:30</b> >>> созвон по сборке петард из самогона дедушки</p>
+    <p style="font-size: 14px;">🟢 <b>12:00 - 12:30</b> >>> созвон по сборке похоронного гроба из Икеи</p>
+    <p style="font-size: 14px;">🟠 <b>12:00 - 12:30</b> >>> созвон по гойде</p>
+    <p style="font-size: 14px;">🟠 <b>12:00 - 12:30</b> >>> созвон для электрических чайников</p>
+    <p style="font-size: 14px;">🔴 <b>12:00 - 12:30</b> >>> созвон разрабов FEM</p>
   </div>
-<button class="sheet_button">Указать расписание</button>
-<div class="col d-flex justify-content-center" style="width: 40rem; height: 60rem;">
+<button class="sheet_button" >
+  <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="text-decoration: none; ">Указать расписание</a>
+</button>
+<div class="col d-flex justify-content-center" style="width: 40rem; height: 55rem;">
 </div>
 {% endblock %}  
