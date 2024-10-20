@@ -10,6 +10,5 @@ urlpatterns = [
     path("", views.HomePage.as_view(), name="index"),
     path("pages/account/", views.AccountView.as_view(), name="account"),
     path("pages/edit_profile/", views.AccountEdit.as_view(), name="edit_profile"),
-    path("pages/meetjoin/", views.JointomeetView.as_view(), name="meetjoin"),
     path("pages/organization_meeting/", views.OrganizationMeeting.as_view(), name="organization")
 ]

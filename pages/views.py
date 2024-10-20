@@ -31,9 +31,6 @@ class AccountView(TemplateView):
 class AccountEdit(TemplateView):
     template_name = 'pages/edit_profile.html'
 
-class JointomeetView(TemplateView):
-    template_name = 'pages/meetjoin.html'
-
 class OrganizationMeeting(TemplateView):
     template_name = 'pages/organization_meeting.html'
 
