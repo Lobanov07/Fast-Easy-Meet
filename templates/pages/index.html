@@ -17,9 +17,9 @@
 }
 
 .center {
-  position: absolute;
-  top:50%;
-  left:47%;
+  position: relative;
+  top:200px;
+  left: 1075px;
   transform: translate(-50%,-50%);
 }
 
@@ -79,11 +79,13 @@
   </div>
 
   <div>
-    <b style="position: absolute; left: 300px; top: 480px">Введите код встречи: </b>
-    <input style="resize: none; width: 300px; height: 50px; border-radius: 10px; position: relative; top: 220px; left: 180px;">
+    <b style="font-size: 20px; position: relative; left: 180px; top: 180px">Введите код встречи: </b>
+    <input style="resize: none; width: 300px; height: 50px; border-radius: 10px; position: relative; top: 220px; left: -40px;">
   </div>
   <div>
-    <button class="profile_edit_button" style="width: 300px; height: 200px; position: relative; top: 150px; left: 700px;">Организовать встречу</button>
+    <button class="profile_edit_button" style="width: 300px; height: 200px; position: relative; top: 150px; left: 700px;">
+      <a href="{% url 'pages:create_meeting' %}" style="text-decoration: none;">Организовать встречу</a>
+    </button>
   </div>
 
   <div class="col d-flex justify-content-center" style="width: 40rem; height: 20rem;">

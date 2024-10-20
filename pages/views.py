@@ -35,8 +35,8 @@ class OrganizationMeeting(TemplateView):
     template_name = 'pages/organization_meeting.html'
 
 
-class FirstnMeeting(TemplateView):
-    template_name = 'pages/first_meeting.html'
+class CreateMeeting(TemplateView):
+    template_name = 'pages/create_meeting.html'
 
 
 class DateSelection(TemplateView):
