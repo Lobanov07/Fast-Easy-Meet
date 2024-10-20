@@ -77,6 +77,7 @@
 }
 </style>
 
+
 <div class="profile-edit-container">
     <h2 class="profile-edit-header">Редактирование профиля</h2>
     <form method="POST" enctype="multipart/form-data" class="profile-edit-form">
@@ -85,6 +86,7 @@
         <!-- Имя пользователя -->
         <div class="form-group">
             <label for="username">Имя пользователя:</label>
+            <input style="resize: none; height: 50px;">
         </div>
 
         <!-- Электронная почта -->
@@ -100,6 +102,10 @@
         <!-- Дата рождения -->
         <div class="form-group">
             <label for="birth_date">Дата рождения:</label>
+            <div>Phone: <span id="phoneDisplay"></span></div>
+            <input id="slider" type="range" min="10000000000" max="99999999999" value="55555555555" title="Hint: use keyboard arrows to change value" style="transition: width 0.5s ease-in-out;">
+            <hr>
+        <div>
         </div>
 
         <!-- Фото профиля -->
