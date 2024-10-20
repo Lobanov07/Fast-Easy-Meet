@@ -14,4 +14,5 @@ urlpatterns = [
     path("pages/organization_meeting/", views.OrganizationMeeting.as_view(), name="organization"),
     path("pages/first_meeting/", views.FirstnMeeting.as_view(), name="first_meeting"),
     path("pages/date_selection/", views.DateSelection.as_view(), name="date_selection")
+    path("pages/organization_meeting/", views.OrganizationMeeting.as_view(), name="organization")
 ]
