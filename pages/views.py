@@ -34,6 +34,10 @@ class AccountEdit(TemplateView):
 class JointomeetView(TemplateView):
     template_name = 'pages/meetjoin.html'
 
+class OrganizationMeeting(TemplateView):
+    template_name = 'pages/organization_meeting.html'
+
+
 def page_not_found(request, exception):
     return render(request, 'pages/404.html', status=404)
 
