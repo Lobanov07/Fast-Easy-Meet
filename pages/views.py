@@ -40,6 +40,14 @@ class OrganizationMeeting(TemplateView):
     template_name = 'pages/organization_meeting.html'
 
 
+class FirstnMeeting(TemplateView):
+    template_name = 'pages/first_meeting.html'
+
+
+class DateSelection(TemplateView):
+    template_name = 'pages/date_selection.html'
+
+
 def page_not_found(request, exception):
     return render(request, 'pages/404.html', status=404)
 

@@ -51,6 +51,8 @@
     width: 48%;
     padding: 20px;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 .agenda-block h3, .right-block h3 {
@@ -65,11 +67,19 @@ textarea {
     border-radius: 5px;
     font-size: 16px;
     background-color: #fff;
+    resize: none; /* Запрет на изменение размера */
 }
 
 .right-block ol {
     padding-left: 20px;
     font-size: 16px;
+    max-height: 450px; /* Ограничение высоты для списка */
+    overflow-y: auto; /* Вертикальная прокрутка для списка */
+    margin: 0; /* Убираем лишние отступы */
+}
+
+.right-block ol li {
+    margin-bottom: 5px;
 }
 
 .meeting-code {
@@ -78,14 +88,14 @@ textarea {
     color: #333;
 }
 
-/* Новый стиль для контейнера кнопки */
+/* Новый стиль для контейнера кнопок */
 .button-container {
-    background-color: #f9f9f9; /* Цвет фона кнопки */
-    padding: 10px 0; /* Отступы вокруг кнопки */
-    position: absolute; /* Позиционирование для привязки к нижней границе */
-    bottom: 0; /* Расположение внизу блока */
+    background-color: #f9f9f9;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 0;
     left: 0;
-    width: 100%; /* Ширина контейнера на 100% */
+    width: 100%;
 }
 
 #generate-dates-btn {
@@ -96,11 +106,43 @@ textarea {
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
-    width: 100%; /* Ширина кнопки 100% */
+    width: 100%;
 }
 
 #generate-dates-btn:hover {
     background-color: #45a049;
+}
+
+#save-btn {
+    background-color: #2196F3;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+}
+
+#save-btn:hover {
+    background-color: #1976D2;
+}
+
+#delete-btn {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+}
+
+#delete-btn:hover {
+    background-color: #e53935;
 }
 </style>
 
@@ -115,19 +157,22 @@ textarea {
         <div class="left-block">
             <!-- Код встречи -->
             <div class="meeting-code">
+                <p>Статус встречи: 🟢 хз</p>
                 <p>Код встречи: <strong>6661488</strong></p>
             </div>
 
             <div class="agenda-block">
                 <h3>Повестка встречи:</h3>
                 <div class="agenda-content">
-                    <textarea placeholder="Введите повестку встречи здесь..." rows="6">Влияние Гойды на детей стоит остро в это время</textarea>
+                    <textarea style="resize: none;" placeholder="Введите повестку встречи здесь..." rows="6">Влияние Гойды на детей стоит остро в это время</textarea>
                 </div>
             </div>
 
-            <!-- Контейнер для кнопки -->
+            <!-- Контейнер для кнопок -->
             <div class="button-container">
                 <button id="generate-dates-btn">Сгенерировать даты встречи</button>
+                <button id="save-btn">Сохранить</button>
+                <button id="delete-btn">Удалить</button>
             </div>
         </div>
 
@@ -141,6 +186,32 @@ textarea {
                 <li>Аристократ</li>
                 <li>Бебрик</li>
                 <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                <li>Слоник Слонович</li>
+                
+                <!-- Добавьте ещё людей для проверки прокрутки -->
             </ol>
         </div>
     </div>
@@ -148,3 +219,4 @@ textarea {
 </div>
 
 {% endblock %}
+

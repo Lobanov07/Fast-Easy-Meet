@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Выбор даты встречи{% endblock %}
+
+{% block content %}
+<style>
+
+
+.meeting-header {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.select-date-btn {
+    background-color: #2196F3;
+
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.select-date-btn:hover {
+    background-color: #1e87e5;
+}
+</style>
+
+<div class="meeting-container">
+    <!-- Заголовок -->
+    <div class="meeting-header">
+        Здесь что-то будет
+    </div>
+    
+    <!-- Кнопка выбора даты -->
+    <button class="select-date-btn">Выбрать даты</button>
+</div>
+<script>
+document.querySelector('.select-date-btn').addEventListener('click', function() {
+    alert('Время для анекдота: Кошка, переевшая аскорбинок, зашла в озеро... зашипела... и растворилась...');
+});
+</script>
+{% endblock %}
+Описание:

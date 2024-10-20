@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}Организация встречи{% endblock %}
+
+{% block content %}
+<style>
+.meeting-container {
+    max-width: 700px;
+    min-height: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.meeting-header {
+    background-color: #a6d6f7;
+    padding: 20px;
+    border-radius: 10px 10px 0 0;
+    text-align: center;
+}
+
+.meeting-title-input {
+    font-size: 24px;
+    background-color: #a6d6f7;
+    border: none;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+}
+
+.meeting-content {
+    padding: 20px;
+}
+
+.left-block {
+    background-color: #e0f7ff;
+    min-height: 520px;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.agenda-block h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #fff;
+}
+
+.meeting-code {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Новый стиль для контейнера кнопки */
+.button-container {
+    background-color: #f9f9f9;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+#generate-dates-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+}
+
+#generate-dates-btn:hover {
+    background-color: #45a049;
+}
+</style>
+
+<div class="meeting-container">
+    <!-- Шапка встречи -->
+    <div class="meeting-header">
+        <input type="text" value="Обсуждение Гойды и как она влияет на детей" class="meeting-title-input">
+    </div>
+    
+    <div class="meeting-content">
+        <!-- Повестка встречи -->
+        <div class="left-block">
+            <!-- Код встречи -->
+            <div class="meeting-code">
+                <p>Код встречи: <strong>6661488</strong></p>
+            </div>
+
+            <div class="agenda-block">
+                <h3>Повестка встречи:</h3>
+                <div class="agenda-content">
+                    <textarea style="resize: none;" placeholder="Введите повестку встречи здесь..." rows="12">Влияние Гойды на детей стоит остро в это время</textarea>
+                </div>
+            </div>
+
+            <!-- Контейнер для кнопки -->
+            <div class="button-container">
+                <button id="generate-dates-btn">Создать встречу</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
