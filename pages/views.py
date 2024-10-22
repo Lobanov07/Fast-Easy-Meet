@@ -12,6 +12,31 @@ from accounts.models import CustomUser
 from accounts.forms import CustomUserCreationForm, CustomUserForm
 
 
+POSTS_PER_PAGE = 10
+
+
+User = get_user_model()
+
+
+class AccountView(TemplateView):
+    template_name = 'pages/account.html'
+
+
+class AccountEdit(TemplateView):
+    template_name = 'pages/edit_profile.html'
+
+class OrganizationMeeting(TemplateView):
+    template_name = 'pages/organization_meeting.html'
+
+
+class CreateMeeting(TemplateView):
+    template_name = 'pages/create_meeting.html'
+
+
+class DateSelection(TemplateView):
+    template_name = 'pages/date_selection.html'
+
+
 class HomePage(TemplateView):
     template_name = 'pages/index.html'
 

@@ -1,4 +1,145 @@
-{% extends "base.html" %}
+
+{% extends 'base.html' %}
+
+{% block title %}Редактирование профиля{% endblock %}
+
+{% block content %}
+<style>
+    .profile-edit-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-edit-header {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.profile-edit-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.form-group img {
+    margin-top: 10px;
+    border-radius: 50%;
+}
+
+.btn-save {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-back {
+    display: inline-block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.btn-back:hover {
+    text-decoration: underline;
+}
+
+.btn-save:hover {
+    background-color: #45a049;
+}
+</style>
+
+
+<div class="profile-edit-container">
+    <h2 class="profile-edit-header">Редактирование профиля</h2>
+    <form method="POST" enctype="multipart/form-data" class="profile-edit-form">
+        {% csrf_token %}
+        
+        <!-- Имя пользователя -->
+        <div class="form-group">
+            <label for="username">Имя пользователя:</label>
+            <input style="resize: none; height: 50px;">
+        </div>
+
+        <!-- Электронная почта -->
+        <div class="form-group">
+            <label for="email">Адрес электронной почты:</label>
+            <input style="resize: none; height: 50px;">
+        </div>
+
+        <!-- Биография -->
+        <div class="form-group">
+            <label for="bio">Биография:</label>
+            <input style="resize: none; height: 50px;">
+        </div>
+
+        <!-- Дата рождения -->
+        <div class="form-group">
+            <label for="birth_date">Дата рождения:</label>
+            <input style="resize: none; height: 50px;">
+        <div>
+        </div>
+
+        <!-- Фото профиля -->
+        <div class="form-group">
+            <label for="avatar">Фото профиля:</label>
+            {% if user.profile.avatar %}
+            <p>На данный момент: <img src="{{ user.profile.avatar.url }}" alt="Profile Picture" width="100"></p>
+            {% endif %}
+            {{ form.avatar }}
+        </div>
+
+        <!-- Номер телефона -->
+        <div class="form-group">
+            <label for="phone">Номер телефона:</label>
+            <input style="resize: none; height: 50px;">
+        </div>
+
+        <!-- Время на подготовку -->
+        <div class="form-group">
+            <label for="prep_time">Время на подготовку:</label>
+            <input style="resize: none; height: 50px;">
+        </div>
+
+        <!-- Кнопки -->
+        <div class="form-group">
+            <button type="submit" class="btn-save">Сохранить изменения</button>
+            <a class="btn-back">Назад к профилю</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+<!-- {% extends "base.html" %}
 
 {% block title %}
   Редактирование профиля: {{ user.username }}
@@ -10,8 +151,9 @@
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}  <!-- Вывод всех полей формы в виде абзацев -->
-    <button type="submit">Сохранить изменения</button>
+<!--     <button type="submit">Сохранить изменения</button>
   </form>
   
   <a href="{% url 'pages:profile' user.username %}">Назад к профилю</a>
-{% endblock %}
+{% endblock %} --> 
+

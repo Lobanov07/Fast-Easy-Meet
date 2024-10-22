@@ -1,6 +1,8 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from accounts.models import CustomUser
+
 
 
 class Schedule(models.Model):
@@ -45,6 +47,7 @@ class Meeting(models.Model):
             ("canceled", "Отменено"),
         ],
         default="scheduled",
+
         verbose_name="Статус"
     )  # Статус встречи
     agenda = models.TextField(

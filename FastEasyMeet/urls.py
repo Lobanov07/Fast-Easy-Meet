@@ -1,10 +1,14 @@
 from django.contrib import admin
 from django.urls import include, path, reverse_lazy
+
+from django.contrib.auth.forms import UserCreationForm
+
 from django.views.generic.edit import CreateView
 from django.conf.urls.static import static
 from django.conf import settings
 from django.urls import re_path
 from django.views.static import serve
+
 from django.contrib.auth.views import (
     LoginView,
     LogoutView,
@@ -14,21 +18,25 @@ from django.contrib.auth.views import (
 )
 from accounts.forms import CustomUserCreationForm
 
+
 handler404 = "pages.views.page_not_found"
 handler500 = "pages.views.internal_server_error"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+
     path("", include("pages.urls")),
     path(
         'registration/',
         CreateView.as_view(
             template_name='registration/registration_form.html',
             form_class=CustomUserCreationForm,
+
             success_url=reverse_lazy('pages:index'),
         ),
         name='registration',
     ),
+
     path(
         'login/',
         LoginView.as_view(template_name='registration/login.html'),
@@ -54,6 +62,7 @@ urlpatterns = [
         PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'),
         name='password_reset_confirm'
     ),
+
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
