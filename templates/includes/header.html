@@ -26,11 +26,11 @@
             </a>
           </li>
 
-<!--           <li class="nav-item">
+          {% comment %} <li class="nav-item">
             <a class="nav-link {% if view_name == 'pages:profile' %} text-white {% endif %}" href="{% url 'pages:profile' user.username%}">
               Профиль
             </a>
-          </li> -->
+          </li>  {% endcomment %}
 
           {% if user.is_authenticated %}
             <div class="btn-group" role="group" aria-label="Basic outlined example">

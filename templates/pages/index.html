@@ -99,14 +99,14 @@
     </script>
   
 
-<!--   Лента записей
+{% comment %} Лента записей
 {% endblock %}
 {% block content %}
 <div style="text-align: center; margin-top: 50px;">
-  {% comment %} <a href="{% url 'sign_up_meeting' %}" class="btn btn-primary btn-lg" role="button" style="margin: 10px; padding: 15px 30px;">Записаться на встречу</a>
-  <a href="{% url 'create_meeting' %}" class="btn btn-secondary btn-lg" role="button" style="margin: 10px; padding: 15px 30px;">Создать встречу</a> {% endcomment %}
+   <a href="{% url 'sign_up_meeting' %}" class="btn btn-primary btn-lg" role="button" style="margin: 10px; padding: 15px 30px;">Записаться на встречу</a>
+  <a href="{% url 'create_meeting' %}" class="btn btn-secondary btn-lg" role="button" style="margin: 10px; padding: 15px 30px;">Создать встречу</a>
   <a href="{% url 'pages:index' %}" class="btn btn-primary btn-lg" role="button" style="margin: 10px; padding: 30px 30px;">Записаться на встречу</a>
   <a href="{% url 'pages:index' %}" class="btn btn-secondary btn-lg" role="button" style="margin: 10px; padding: 30px 30px;">Создать встречу</a>
-</div> -->
+</div> {% endcomment %}
 
 {% endblock %}

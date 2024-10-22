@@ -16,8 +16,7 @@ urlpatterns = [
     path("pages/organization_meeting/", views.OrganizationMeeting.as_view(), name="organization"),
     path("pages/create_meeting/", views.CreateMeeting.as_view(), name="create_meeting"),
     path("pages/date_selection/", views.DateSelection.as_view(), name="date_selection"),
-    path("pages/organization_meeting/", views.OrganizationMeeting.as_view(), name="organization")
-]
+    path("pages/organization_meeting/", views.OrganizationMeeting.as_view(), name="organization"),
     path('pages/profile/<str:username>/', views.profile_view, name='profile'),
 #     path(
 #         'pages/edit/<str:username>/',
