@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Профиль пользователя: {{ user.username }}
+{% endblock %}
+
+{% block content %}
+  <h1>{{ user.username }}</h1>
+  {% if user.profile_picture %}
+    <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s профиль" style="max-width: 150px;">
+  {% endif %}
+  
+  <p><strong>Биография:</strong> {{ user.bio|default:"Нет информации" }}</p>
+  <p><strong>Дата рождения:</strong> {{ user.date_of_birth|date:"d.m.Y"|default:"Не указана" }}</p>
+  <p><strong>Номер телефона:</strong> {{ user.phone_number|default:"Не указан" }}</p>
+  <p><strong>Время на подготовку:</strong> {{ user.preparation_time }}</p>
+  <p><strong>Профиль создан:</strong> {{ user.created_at|date:"d.m.Y H:i" }}</p>
+  <p><strong>Профиль обновлен:</strong> {{ user.updated_at|date:"d.m.Y H:i" }}</p>
+  
+  <a href="{% url 'pages:edit_profile' user.username %}">Редактировать профиль</a>
+{% endblock %}

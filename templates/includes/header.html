@@ -8,11 +8,13 @@
       </a>
       {% with request.resolver_match.view_name as view_name %}
         <ul class="nav  nav-pills">
+
           <li class="nav-item"></li>
             <a class="nav-link {% if view_name == 'pages:account' %} text-white {% endif %}" href="{% url 'pages:account' %}">
               Аккаунт
             </a>
           </li>
+
           <li class="nav-item">
             <a class="nav-link {% if view_name == 'pages:about' %} text-white {% endif %}" href="{% url 'pages:about' %}">
               О проекте
@@ -23,6 +25,13 @@
               Правила
             </a>
           </li>
+
+<!--           <li class="nav-item">
+            <a class="nav-link {% if view_name == 'pages:profile' %} text-white {% endif %}" href="{% url 'pages:profile' user.username%}">
+              Профиль
+            </a>
+          </li> -->
+
           {% if user.is_authenticated %}
             <div class="btn-group" role="group" aria-label="Basic outlined example">
               {% comment %} <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"

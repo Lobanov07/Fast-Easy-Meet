@@ -1,61 +1,44 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from accounts.models import CustomUser
 
-class User(AbstractUser):
-    phone_number = models.CharField(
-        max_length=15, blank=True, null=True
-    )  # Телефонный номер
-    profile_picture = models.ImageField(
-        upload_to="profile_pictures/", blank=True, null=True
-    )  # Фото профиля
-    preparation_time = models.DurationField(
-        default="00:15:00"
-    )  # Время на подготовку к созвону
-    bio = models.TextField(blank=True, null=True)  # Биография пользователя
-    created_at = models.DateTimeField(
-        auto_now_add=True)  # Дата создания профиля
-    updated_at = models.DateTimeField(
-        auto_now=True
-    )  # Дата последнего обновления профиля
-    groups = models.ManyToManyField(
-        "auth.Group",
-        verbose_name="группы",
-        blank=True,
-        related_name="custom_user_set",  # Укажите уникальное имя
-        help_text="Группы, к которым принадлежит пользователь.",
-    )
-
-    user_permissions = models.ManyToManyField(
-        "auth.Permission",
-        verbose_name="права пользователя",
-        blank=True,
-        related_name="custom_user_permissions",  # Укажите уникальное имя
-        help_text="Разрешения, предоставленные пользователю.",
-    )
-
-    # Настройка только для демонстрационных целей
-    def __str__(self):
-        return self.username  # Может быть изменено на email или другой идентификатор
 
 
 class Schedule(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="schedules"
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name="schedules",
+        verbose_name="Пользователь"
     )  # Связь с пользователем
-    start_time = models.DateTimeField()  # Время начала
-    end_time = models.DateTimeField()  # Время окончания
-    description = models.TextField(blank=True, null=True)  # Описание расписания
+    start_time = models.DateTimeField(
+        verbose_name="Время начала"
+    )  # Время начала
+    end_time = models.DateTimeField(
+        verbose_name="Время окончания"
+    )  # Время окончания
+    description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Описание"
+    )  # Описание расписания
 
     class Meta:
         ordering = ["start_time"]  # Сортировка по времени начала
+        verbose_name = "расписание"
+        verbose_name_plural = "Расписания"
 
 
 class Meeting(models.Model):
     participants = models.ManyToManyField(
-        User, related_name="meetings"
+        CustomUser,
+        related_name="meetings",
+        verbose_name="Участники"
     )  # Участники встречи
-    date_time = models.DateTimeField()  # Дата и время встречи
+    date_time = models.DateTimeField(
+        verbose_name="Дата встречи"
+    )  # Дата и время встречи
     status = models.CharField(
         max_length=10,
         choices=[
@@ -64,11 +47,20 @@ class Meeting(models.Model):
             ("canceled", "Отменено"),
         ],
         default="scheduled",
+
+        verbose_name="Статус"
     )  # Статус встречи
-    agenda = models.TextField(blank=True, null=True)  # Повестка встречи
+    agenda = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Повестка встречи"
+    )  # Повестка встречи
 
     def __str__(self):
-        return f"Meeting on {self.date_time} with {', '.join([str(participant) for participant in self.participants.all()])}"
+        return f"Meeting on {self.date_time} with " + (
+               f"{', '.join([str(participant) for participant in self.participants.all()])}")
 
     class Meta:
         ordering = ["date_time"]  # Сортировка по времени встречи
+        verbose_name = "встреча"
+        verbose_name_plural = "Встречи"
