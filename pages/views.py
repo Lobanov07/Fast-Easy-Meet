@@ -49,6 +49,10 @@ class RulesView(TemplateView):
     template_name = 'pages/rules.html'
 
 
+class CodeOIntroduction(TemplateView):
+    template_name = 'pages/code_introduction.html'
+
+
 def page_not_found(request, exception):
     return render(request, 'pages/404.html', status=404)
 

@@ -23,6 +23,7 @@ urlpatterns = [
 #         views.edit_profile_view,
 #         name='edit_profile'),
     path("", views.HomePage.as_view(), name="index"),
+    path('pages/code_introduction/', views.CodeOIntroduction.as_view(), name='code_introduction')
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
