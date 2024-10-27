@@ -37,7 +37,9 @@ class Meeting(models.Model):
         verbose_name="Участники"
     )  # Участники встречи
     date_time = models.DateTimeField(
-        verbose_name="Дата встречи"
+        verbose_name="Дата встречи",
+        blank=True,
+        null=True,
     )  # Дата и время встречи
     status = models.CharField(
         max_length=20,
