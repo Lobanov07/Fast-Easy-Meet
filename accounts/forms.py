@@ -9,10 +9,10 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ("username", "email", "password1", "password2")
 
 
-class CustomUserForm(forms.ModelForm):
+class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
-        fields = (
+        fields = [
             "username",
             "email",
             "bio",
@@ -20,4 +20,29 @@ class CustomUserForm(forms.ModelForm):
             "profile_picture",
             "phone_number",
             "preparation_time",
-        )
+        ]
+
+        widgets = {
+            "username": forms.TextInput(
+                attrs={"style": "resize: none; height: 50px;"}),
+
+            "email": forms.EmailInput
+            (attrs={"style": "resize: none; height: 50px;"}),
+
+            "bio": forms.TextInput(
+                attrs={"style": "resize: none; height: 50px;"}),
+
+            "date_of_birth": forms.widgets.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={"type": "date", "style": "resize: none; height: 50px;"}
+            ),
+            "phone_number": forms.TextInput(
+                attrs={"style": "resize: none; height: 50px;"}),
+
+            "preparation_time": forms.TextInput(
+                attrs={"style": "resize: none; height: 50px;"}
+            ),
+
+            "profile_picture": forms.FileInput(
+                attrs={"class": "form-control"}),
+        }
