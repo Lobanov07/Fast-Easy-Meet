@@ -7,6 +7,12 @@ from django.conf.urls.static import static
 app_name = "pages"
 
 urlpatterns = [
+
+    path(
+      'pages/code_introduction/',
+       views.CodeOIntroduction.as_view(),
+       name='code_introduction'
+    ),
     path(
         "pages/about/",
         views.AboutView.as_view(),
