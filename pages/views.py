@@ -63,10 +63,12 @@ def internal_server_error(request):
 
 def profile_view(request, username):
     user = get_object_or_404(CustomUser, username=username)
+    user_meetings = user.meetings.all()
     context = {
-        'user': user
+        'user': user,
+        'user_meetings': user_meetings
     }
-    return render(request, 'pages/profile.html', context)
+    return render(request, 'pages/account.html', context)
 
 
 def edit_profile_view(request, username):

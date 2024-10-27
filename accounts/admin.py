@@ -17,7 +17,6 @@ class CustomUserAdmin(UserAdmin):
                     "profile_picture",
                     "phone_number",
                     "preparation_time",
-                    "created_at",
                 )
             },
         ),
