@@ -145,7 +145,13 @@ img{
           {% elif meeting.status == "Отменено" %}
             🟠
           {% endif %}
-          {{ meeting.date_time }} - {{ meeting.agenda }} (Статус: {{ meeting.status }})
+          {% if meeting.agenda|length > 10 %}
+            {{ meeting.date_time }} - {{ meeting.agenda|slice:":10" }}... Организатор: 
+            <a href="{% url 'pages:profile' meeting.host %}" style="text-decoration: none;"> {{ meeting.host }}</a>
+            (Статус: {{ meeting.status }})
+          {% else %}
+              {{ meeting.date_time }} - {{ meeting.agenda }} Организатор: {{ meeting.host }} (Статус: {{ meeting.status }})
+          {% endif %}
         </li>
       {% endfor %}
     </ul>
