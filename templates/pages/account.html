@@ -14,6 +14,7 @@
   align-items: center;
   justify-content: center;
 	list-style-type: marker-status;
+  height: 100px;
 }
 .marker li {
 	font-size: 14px;
@@ -26,9 +27,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 145px;
-  left: 175px;
+  position: relative;
+  top: 50px;
+  left: 100px;
   visibility:visible;
   }
   .round {
@@ -47,10 +48,10 @@
     justify-content: center;
     margin-inline: auto;
     overflow: hidden;
-    position: absolute;
+    position: relative;
   }
   .sheet_button{
-  width: 800px;
+  width: 850px;
   height: 50px;
   border-radius: 10px;
   background-color: rgb(135, 206, 235);
@@ -58,9 +59,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  left: 600px;
-  top: 700px;
+  position: relative;
+  left: -470px;
+  top: 640px;
 }
 .profile_info {
     width: 300px;
@@ -71,9 +72,9 @@
     -webkit-border-radius: 50px / 100px;
     -moz-border-radius: 50px / 100px;
     border-radius: 100px;
-    position: absolute;
-    top: 380px;
-    left: 130px;
+    position: relative;
+    top: 100px;
+    left: 50px;
 }
 .profile_button{
   width: 200px;
@@ -85,9 +86,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute; 
-  top: 650px; 
-  left: 180px;
+  position: relative; 
+  top: -10px; 
+  left: 100px;
 }
 .profile_edit_button{
   width: 200px;
@@ -99,44 +100,48 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute; 
-  top: 700px; 
-  left: 180px;
+  position:relative;
+  top: 0px; 
+  left: 100px;
 }
 img{
   max-width: 100%;
 }
   </style>
-  
- 
-  <div class="roundness" >
-    <img alt="logo" src="{% static 'img/aristo.png' %}"  class="profile_image_wrap">
-  </div>
 
-  <div class="profile_info">
-    <b>@aristo</b><br>
-    <b>ФИО:</b><br>
-    <tr>Самый лучший челикс</tr><br>
-    <b>Дата рождения:</b><br>
-    <tr>01.01.0001</tr><br>
-    <b>Электронная почта:</b><br>
-    <tr>tirex@gg.ru</tr><br>
-  </div>
 
-<button class="profile_button">
-    Узнать больше...
-</button>
-<button class="profile_edit_button">
-  <a href="{% url 'pages:edit_profile' %}" style="text-decoration: none;">Редактировать профиль</a>
-</button>
 
-<ul class="marker" style="position: absolute; left: 600px; right: auto;">
+<div class="col d-flex justify-content-center" style="width: 1600px; height: 800px;justify-content: center; display: flex">
+    <div class="prof">
+      <div class="roundness" >
+        <img alt="logo" src="{% static 'img/aristo.png' %}"  class="profile_image_wrap">
+      </div>
+    
+      <div class="profile_info">
+        <b>@aristo</b><br>
+        <b>ФИО:</b><br>
+        <tr>Самый лучший челикс</tr><br>
+        <b>Дата рождения:</b><br>
+        <tr>01.01.0001</tr><br>
+        <b>Электронная почта:</b><br>
+        <tr>tirex@gg.ru</tr><br>
+      </div>
+    
+    <button class="profile_button">
+        Узнать больше...
+    </button>
+    <button class="profile_edit_button">
+      <a href="{% url 'pages:edit_profile' %}" style="text-decoration: none;">Редактировать профиль</a>
+    </button>
+    </div>
+
+<ul class="marker" style="position: relative; left: 300px;">
   <li>Запланированнные созвоны</li>
   <li>Действующие созвоны</li>
   <li>Завершённые созвоны</li>
 </ul>
   
-  <div class="card" style="width: 50rem; height: 30rem; position:absolute; top: 200px; left: 600px"> 
+  <div class="card" style="width: 850px; height: 450px; position:relative; left: 100px; top: 150px"> 
     <div class="card-header">
       <div align="center">Запланированнные встречи</div>
     </div>
@@ -149,6 +154,5 @@ img{
 <button class="sheet_button">
   <a href="{% url 'pages:date_selection' %}" style="text-decoration: none; ">Указать расписание</a>
 </button>
-<div class="col d-flex justify-content-center" style="width: 40rem; height: 55rem;">
 </div>
 {% endblock %}  
