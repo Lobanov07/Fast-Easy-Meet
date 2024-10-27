@@ -1,4 +1,5 @@
-from django.contrib.auth.models import AbstractUser
+import uuid
+
 from django.db import models
 
 from accounts.models import CustomUser
@@ -54,6 +55,17 @@ class Meeting(models.Model):
         null=True,
         verbose_name="Повестка встречи"
     )  # Повестка встречи
+    unique_code = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+        verbose_name="Уникальный код"
+    )  # Уникальный код встречи
+    host = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name="hosted_meetings",
+        verbose_name="Хост"
+    )  # Создатель встречи
 
     def __str__(self):
         return f"Meeting on {self.date_time} with " + (
