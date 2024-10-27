@@ -129,27 +129,26 @@ img{
     Узнать больше...
 </button>
 <button class="profile_edit_button">
-  <a href="{% url 'pages:edit_profile' %}" style="text-decoration: none;">Редактировать профиль</a>
+  <a href="{% url 'pages:edit_profile' user.username %}" style="text-decoration: none;">Редактировать профиль</a>
 </button>
-
-<ul class="marker" style="position: absolute; left: 600px; right: auto;">
-  <li>Запланированнные созвоны</li>
-  <li>Действующие созвоны</li>
-  <li>Завершённые созвоны</li>
-</ul>
-  
   <div class="card" style="width: 50rem; height: 30rem; position:absolute; top: 200px; left: 600px"> 
     <div class="card-header">
       <div align="center">Запланированнные встречи</div>
     </div>
-    {% for meeting in user_meetings%}
-    <li>{{ meeting.date_time }} - {{ meeting.agenda }} (Статус: {{ meeting.status }})</li>
-    {% endfor %}
-    {% comment %} <p style="font-size: 14px;">🟢 <b>12:00 - 12:30</b> >>> созвон по сборке петард из самогона дедушки <b>(@penis228)</b></p>
-    <p style="font-size: 14px;">🟢 <b>12:30 - 13:00</b> >>> созвон по сборке похоронного гроба из Икеи <b>(@kriper2004)</b></p>
-    <p style="font-size: 14px;">🟠 <b>13:00 - 13:30</b> >>> созвон по гойде <b>(@o4ko777)</b></p>
-    <p style="font-size: 14px;">🟠 <b>13:00 - 14:00</b> >>> созвон для электрических чайников <b>(@deposit444)</b></p>
-    <p style="font-size: 14px;">🔴 <b>14:00 - 14:30</b> >>> созвон разрабов FEM <b>(@aristo)</b></p> {% endcomment %}
+    <ul style="list-style-type: none; padding: 1; margin: 0;">
+      {% for meeting in user_meetings %}
+        <li>
+          {% if meeting.status == "Завершено" %}
+            🔴
+          {% elif meeting.status == "Запланировано" %}
+            🟢
+          {% elif meeting.status == "Отменено" %}
+            🟠
+          {% endif %}
+          {{ meeting.date_time }} - {{ meeting.agenda }} (Статус: {{ meeting.status }})
+        </li>
+      {% endfor %}
+    </ul>
   </div>
 <button class="sheet_button">
   <a href="{% url 'pages:date_selection' %}" style="text-decoration: none; ">Указать расписание</a>
