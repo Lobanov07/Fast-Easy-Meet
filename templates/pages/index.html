@@ -22,15 +22,18 @@
 }
 .main-content {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .left-block {
     min-height: 520px;
     width: 48%;
     padding: 20px;
     border-radius: 10px;
-    position: relative; /* Устанавливаем позицию для родительского контейнера */
+    display: flex;
+    flex-direction: column;
 }
 .right-block {
     width: 48%;
@@ -42,26 +45,26 @@
 
   </style>
 
-<div class="main" style="max-width: 1600px; min-height: 700px; justify-content: center; display: block">
+<div class="main" style="max-width: 2000px; min-height: 700px; justify-content: center; display: block">
   <div class="main-header">
     <b style="font-size: 40px; left: 200px;">FEM - создай созвон вместе с Fast-Easy-Meet!!!</b><br><br>
 
     <class style="font-size: 30px; left: 450px">Выберите действие:</class>
+  </div>
     <div class="main-content">
-    <div class="left-block">
-      <div>
-        <button class="join_button" style="max-width: 300px; min-height: 200px; position: relative; top: 260px; left: 30px;">
+      <div class="left-block" style="position: relative; left: 0px; right:auto;">
+        <button class="join_button" style="max-width: 300px; min-height: 100px; position: static">
           <a href="{% url 'pages:create_meeting' %}" style="text-decoration: none;">Присоединиться к встрече</a>
         </button>
       </div>
-    </div>
-    <div class="right-block">
-      <button class="join_button" style="max-width: 300px; min-height: 200px; position: relative; top: 260px; left: 30px">
-        <a href="{% url 'pages:create_meeting' %}" style="text-decoration: none;">Организовать встречу</a>
-      </button>
-    </div>
+      <div class="right-block" style="position: relative; left: auto; right: 0px;">
+        <button class="join_button" style="max-width: 300px; min-height: 100px; position: static">
+          <a href="{% url 'pages:create_meeting' %}" style="text-decoration: none;">Организовать встречу</a>
+        </button>
+      </div>
+      </div>
   </div>
-  </div>
+  
 
    
 
