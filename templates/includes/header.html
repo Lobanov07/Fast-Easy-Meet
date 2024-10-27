@@ -29,15 +29,18 @@
 
           {% if user.is_authenticated %}
             <div class="btn-group" role="group" aria-label="Basic outlined example">
-              <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
-                  href="{% url 'logout' %}">Выйти</a></button>
+              <form action="{% url 'logout' %}" target="_self">
+              <button class="btn btn-outline-primary">Выйти</button>
+              </form>
             </div>
           {% else %}
             <div class="btn-group" role="group" aria-label="Basic outlined example">
-              <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
-                  href="{% url 'login' %}">Войти</a></button>
-              <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
-                  href="{% url 'registration' %}">Регистрация</a></button>
+              <form action="{% url 'login' %}" target="_self">
+              <button class="btn btn-outline-primary">Войти</button>
+              </form>
+              <form action="{% url 'registration' %}" target="_self">
+              <button class="btn btn-outline-primary">Регистрация</button>
+              </form>
             </div>
           {% endif %}
         </ul>

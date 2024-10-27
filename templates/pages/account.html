@@ -127,9 +127,12 @@ img{
 <button class="profile_button">
     Узнать больше...
 </button>
-<button class="profile_edit_button">
-  <a href="{% url 'pages:edit_profile' user.username %}" style="text-decoration: none;">Редактировать профиль</a>
+<form action="{% url 'pages:edit_profile' user.username %}" target="_self">
+  <button class="profile_edit_button">
+  Редактировать профиль
 </button>
+</form>
+
   <div class="card" style="width: 50rem; height: 30rem; position:absolute; top: 200px; left: 600px"> 
     <div class="card-header">
       <div align="center">Запланированнные встречи</div>
@@ -149,8 +152,10 @@ img{
       {% endfor %}
     </ul>
   </div>
+<form action="{% url 'pages:date_selection' %}" target="_self">
 <button class="sheet_button">
-  <a href="{% url 'pages:date_selection' %}" style="text-decoration: none; ">Указать расписание</a>
+  Указать расписание
 </button>
+</form>
 </div>
 {% endblock %}  

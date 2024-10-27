@@ -36,12 +36,16 @@
 
     <class style="font-size: 30px; left: 450px">Выберите действие:</class><br><br>
     <div class="main-content">
+        <form action="{% url 'pages:create_meeting' %}" target="_self">
         <button class="join_button" style="max-width: 300px; min-height: 100px; position: relative;">
-          <a href="{% url 'pages:create_meeting' %}" style="text-decoration: none;">Присоединиться к встрече</a>
+          Присоединиться к встрече
         </button>
+      </form>
+      <form action="{% url 'pages:create_meeting' %}" target="_self">
         <button class="join_button" style="max-width: 300px; min-height: 100px; position: relative;">
-          <a href="{% url 'pages:create_meeting' %}" style="text-decoration: none;">Организовать встречу</a>
+          Организовать встречу
         </button>
+      </form>
       </div>
   </div>
   </div>
