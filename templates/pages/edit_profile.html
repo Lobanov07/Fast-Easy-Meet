@@ -87,72 +87,55 @@
         <!-- Имя пользователя -->
         <div class="form-group">
             <label for="username">Имя пользователя:</label>
-            <input style="resize: none; height: 50px;">
+            {{ form.username }}
         </div>
 
         <!-- Электронная почта -->
         <div class="form-group">
             <label for="email">Адрес электронной почты:</label>
-            <input style="resize: none; height: 50px;">
+            {{ form.email }}
         </div>
 
         <!-- Биография -->
         <div class="form-group">
             <label for="bio">Биография:</label>
-            <input style="resize: none; height: 50px;">
+            {{ form.bio }}
         </div>
 
         <!-- Дата рождения -->
         <div class="form-group">
-            <label for="birth_date">Дата рождения:</label>
-            <input style="resize: none; height: 50px;">
-        <div>
+            <label for="date_of_birth">Дата рождения:</label>
+            {{ form.date_of_birth }}
         </div>
 
         <!-- Фото профиля -->
         <div class="form-group">
             <label for="avatar">Фото профиля:</label>
-            {% if user.profile.avatar %}
-            <p>На данный момент: <img src="{{ user.profile.avatar.url }}" alt="Profile Picture" width="100"></p>
+            {% if user.profile_picture %}
+            <p>На данный момент: <img src="{{ user.profile_picture.url }}" alt="Profile Picture" width="100"></p>
             {% endif %}
-            {{ form.avatar }}
+            {{ form.profile_picture }}
         </div>
 
         <!-- Номер телефона -->
         <div class="form-group">
-            <label for="phone">Номер телефона:</label>
-            <input style="resize: none; height: 50px;">
+            <label for="phone_number">Номер телефона:</label>
+            {{ form.phone_number }}
         </div>
 
         <!-- Время на подготовку -->
         <div class="form-group">
-            <label for="prep_time">Время на подготовку:</label>
-            <input style="resize: none; height: 50px;">
+            <label for="preparation_time">Время на подготовку:</label>
+            {{ form.preparation_time }}
         </div>
 
         <!-- Кнопки -->
         <div class="form-group">
             <button type="submit" class="btn-save">Сохранить изменения</button>
-            <a class="btn-back">Назад к профилю</a>
+            <a class="btn-back" href="{% url 'pages:profile' user.username %}">Назад к профилю</a>
         </div>
     </form>
 </div>
 {% endblock %}
 
-{% comment %} {% extends "base.html" %}
-
-{% block title %}
-  Редактирование профиля: {{ user.username }}
-{% endblock %}
-{% block content %}
-  <h1>Редактирование профиля</h1>
-  
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}   Вывод всех полей формы в виде абзацев 
-    <button type="submit">Сохранить изменения</button>
-  </form>
-  
-  <a href="{% url 'pages:profile' user.username %}">Назад к профилю</a>
-{% endblock %} {% endcomment %}
 

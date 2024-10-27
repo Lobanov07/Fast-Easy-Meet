@@ -14,6 +14,7 @@
   align-items: center;
   justify-content: center;
 	list-style-type: marker-status;
+  height: 100px;
 }
 .marker li {
 	font-size: 14px;
@@ -26,9 +27,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 145px;
-  left: 175px;
+  position: relative;
+  top: 50px;
+  left: 100px;
   visibility:visible;
   }
   .round {
@@ -47,10 +48,10 @@
     justify-content: center;
     margin-inline: auto;
     overflow: hidden;
-    position: absolute;
+    position: relative;
   }
   .sheet_button{
-  width: 800px;
+  width: 850px;
   height: 50px;
   border-radius: 10px;
   background-color: rgb(135, 206, 235);
@@ -58,9 +59,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  left: 600px;
-  top: 700px;
+  position: relative;
+  left: -470px;
+  top: 640px;
 }
 .profile_info {
     width: 300px;
@@ -71,9 +72,9 @@
     -webkit-border-radius: 50px / 100px;
     -moz-border-radius: 50px / 100px;
     border-radius: 100px;
-    position: absolute;
-    top: 380px;
-    left: 130px;
+    position: relative;
+    top: 100px;
+    left: 50px;
 }
 .profile_button{
   width: 200px;
@@ -85,9 +86,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute; 
-  top: 650px; 
-  left: 180px;
+  position: relative; 
+  top: -10px; 
+  left: 100px;
 }
 .profile_edit_button{
   width: 200px;
@@ -99,56 +100,57 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute; 
-  top: 700px; 
-  left: 180px;
+  position:relative;
+  top: 0px; 
+  left: 100px;
 }
 img{
   max-width: 100%;
 }
   </style>
-  
- 
   <div class="roundness" >
-    <img alt="logo" src="{% static 'img/aristo.png' %}"  class="profile_image_wrap">
+    {% if user.profile_picture %}
+      <img alt="logo" src="{{ user.profile_picture.url }}"  class="profile_image_wrap">
+    {% else %}
+      <img src="{% static 'img/no_photo.png' %}" class="profile_image_wrap">
+    {% endif %}
   </div>
 
   <div class="profile_info">
-    <b>@aristo</b><br>
-    <b>ФИО:</b><br>
-    <tr>Самый лучший челикс</tr><br>
+    <b>{{ user.username }}</b><br>
     <b>Дата рождения:</b><br>
-    <tr>01.01.0001</tr><br>
+    <tr>{{ user.date_of_birth }}</tr><br>
     <b>Электронная почта:</b><br>
-    <tr>tirex@gg.ru</tr><br>
+    <tr>{{ user.email }}</tr><br>
   </div>
 
 <button class="profile_button">
     Узнать больше...
 </button>
 <button class="profile_edit_button">
-  <a href="{% url 'pages:edit_profile' %}" style="text-decoration: none;">Редактировать профиль</a>
+  <a href="{% url 'pages:edit_profile' user.username %}" style="text-decoration: none;">Редактировать профиль</a>
 </button>
-
-<ul class="marker" style="position: absolute; left: 600px; right: auto;">
-  <li>Запланированнные созвоны</li>
-  <li>Действующие созвоны</li>
-  <li>Завершённые созвоны</li>
-</ul>
-  
   <div class="card" style="width: 50rem; height: 30rem; position:absolute; top: 200px; left: 600px"> 
     <div class="card-header">
       <div align="center">Запланированнные встречи</div>
     </div>
-    <p style="font-size: 14px;">🟢 <b>12:00 - 12:30</b> >>> созвон по сборке петард из самогона дедушки <b>(@penis228)</b></p>
-    <p style="font-size: 14px;">🟢 <b>12:30 - 13:00</b> >>> созвон по сборке похоронного гроба из Икеи <b>(@kriper2004)</b></p>
-    <p style="font-size: 14px;">🟠 <b>13:00 - 13:30</b> >>> созвон по гойде <b>(@o4ko777)</b></p>
-    <p style="font-size: 14px;">🟠 <b>13:00 - 14:00</b> >>> созвон для электрических чайников <b>(@deposit444)</b></p>
-    <p style="font-size: 14px;">🔴 <b>14:00 - 14:30</b> >>> созвон разрабов FEM <b>(@aristo)</b></p>
+    <ul style="list-style-type: none; padding: 1; margin: 0;">
+      {% for meeting in user_meetings %}
+        <li>
+          {% if meeting.status == "Завершено" %}
+            🔴
+          {% elif meeting.status == "Запланировано" %}
+            🟢
+          {% elif meeting.status == "Отменено" %}
+            🟠
+          {% endif %}
+          {{ meeting.date_time }} - {{ meeting.agenda }} (Статус: {{ meeting.status }})
+        </li>
+      {% endfor %}
+    </ul>
   </div>
 <button class="sheet_button">
   <a href="{% url 'pages:date_selection' %}" style="text-decoration: none; ">Указать расписание</a>
 </button>
-<div class="col d-flex justify-content-center" style="width: 40rem; height: 55rem;">
 </div>
 {% endblock %}  

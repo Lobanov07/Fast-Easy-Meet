@@ -9,7 +9,7 @@ from django.views.generic import (
 from django.urls import reverse
 
 from accounts.models import CustomUser
-from accounts.forms import CustomUserCreationForm, CustomUserForm
+from accounts.forms import  ProfileEditForm
 
 
 POSTS_PER_PAGE = 10
@@ -17,13 +17,6 @@ POSTS_PER_PAGE = 10
 
 User = get_user_model()
 
-
-class AccountView(TemplateView):
-    template_name = 'pages/account.html'
-
-
-class AccountEdit(TemplateView):
-    template_name = 'pages/edit_profile.html'
 
 class OrganizationMeeting(TemplateView):
     template_name = 'pages/organization_meeting.html'
@@ -67,22 +60,25 @@ def internal_server_error(request):
 
 def profile_view(request, username):
     user = get_object_or_404(CustomUser, username=username)
+    user_meetings = user.meetings.all()
     context = {
-        'user': user
+        'user': user,
+        'user_meetings': user_meetings
     }
-    return render(request, 'pages/profile.html', context)
+    return render(request, 'pages/account.html', context)
 
 
 def edit_profile_view(request, username):
     user = get_object_or_404(CustomUser, username=username)
 
     if request.method == 'POST':
-        form = CustomUserForm(request.POST, request.FILES, instance=user)
+        form = ProfileEditForm(request.POST, request.FILES,
+                               instance=user)
         if form.is_valid():
             form.save()
             return redirect('pages:profile', username=user.username)
     else:
-        form = CustomUserForm(instance=user)
+        form = ProfileEditForm(instance=user)
 
     context = {
         'form': form,

@@ -4,7 +4,6 @@ from django.db import models
 from accounts.models import CustomUser
 
 
-
 class Schedule(models.Model):
     user = models.ForeignKey(
         CustomUser,
@@ -40,13 +39,13 @@ class Meeting(models.Model):
         verbose_name="Дата встречи"
     )  # Дата и время встречи
     status = models.CharField(
-        max_length=10,
+        max_length=20,
         choices=[
-            ("scheduled", "Запланировано"),
-            ("completed", "Завершено"),
-            ("canceled", "Отменено"),
+            ("Запланировано", "Запланировано"),
+            ("Завершено", "Завершено"),
+            ("Отменено", "Отменено"),
         ],
-        default="scheduled",
+        default="Неизвестно",
 
         verbose_name="Статус"
     )  # Статус встречи
