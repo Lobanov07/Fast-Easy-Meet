@@ -24,9 +24,11 @@ class MeetingAdmin(admin.ModelAdmin):
         "date_time",
         "status",
         "agenda",
+        "host",
+        "unique_code",
     )
-    list_editable = ("status",)
-    search_fields = ("date_time",)
+    list_editable = ("status", "agenda")
+    search_fields = ("date_time", "unique_code")
 
 
 admin.site.register(Meeting, MeetingAdmin)
