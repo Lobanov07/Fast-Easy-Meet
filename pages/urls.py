@@ -23,15 +23,15 @@ urlpatterns = [
         name="index"
     ),
     path(
-        "pages/organization_meeting/",
-        views.OrganizationMeeting.as_view(),
-        name="organization"
-    ),
-    path(
         "pages/create_meeting/",
-        views.CreateMeeting.as_view(),
+        views.create_meeting,
         name="create_meeting"
     ),
+    # path(
+    #     "pages/create_meeting/",
+    #     views.CreateMeeting.as_view(),
+    #     name="create_meeting"
+    # ),
     path(
         "pages/date_selection/",
         views.DateSelection.as_view(),

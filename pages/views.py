@@ -4,12 +4,14 @@ from django.db.models import Count
 from django.http import Http404
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.views.generic import (
     ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView)
 from django.urls import reverse
 
 from accounts.models import CustomUser
-from accounts.forms import  ProfileEditForm
+from accounts.forms import ProfileEditForm
+from .forms import MeetingForm
 
 
 POSTS_PER_PAGE = 10
@@ -18,12 +20,24 @@ POSTS_PER_PAGE = 10
 User = get_user_model()
 
 
+@login_required
+def create_meeting(request):
+    if request.method == 'POST':
+        form = MeetingForm(request.POST)
+        if form.is_valid():
+            meeting = form.save(commit=False)
+            meeting.host = request.user
+            meeting.save()
+            form.save_m2m()
+            return redirect('pages:organization')
+    else:
+        form = MeetingForm()
+
+    return render(request, 'pages/create_meeting.html', {'form': form})
+
+
 class OrganizationMeeting(TemplateView):
     template_name = 'pages/organization_meeting.html'
-
-
-class CreateMeeting(TemplateView):
-    template_name = 'pages/create_meeting.html'
 
 
 class DateSelection(TemplateView):
