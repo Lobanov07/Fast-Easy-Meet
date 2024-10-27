@@ -108,48 +108,46 @@ img{
   max-width: 100%;
 }
   </style>
+  <div class="roundness" >
+    {% if user.profile_picture %}
+      <img alt="logo" src="{{ user.profile_picture.url }}"  class="profile_image_wrap">
+    {% else %}
+      <img src="{% static 'img/no_photo.png' %}" class="profile_image_wrap">
+    {% endif %}
+  </div>
 
+  <div class="profile_info">
+    <b>{{ user.username }}</b><br>
+    <b>Дата рождения:</b><br>
+    <tr>{{ user.date_of_birth }}</tr><br>
+    <b>Электронная почта:</b><br>
+    <tr>{{ user.email }}</tr><br>
+  </div>
 
-
-<div class="col d-flex justify-content-center" style="width: 1600px; height: 800px;justify-content: center; display: flex">
-    <div class="prof">
-      <div class="roundness" >
-        <img alt="logo" src="{% static 'img/aristo.png' %}"  class="profile_image_wrap">
-      </div>
-    
-      <div class="profile_info">
-        <b>@aristo</b><br>
-        <b>ФИО:</b><br>
-        <tr>Самый лучший челикс</tr><br>
-        <b>Дата рождения:</b><br>
-        <tr>01.01.0001</tr><br>
-        <b>Электронная почта:</b><br>
-        <tr>tirex@gg.ru</tr><br>
-      </div>
-    
-    <button class="profile_button">
-        Узнать больше...
-    </button>
-    <button class="profile_edit_button">
-      <a href="{% url 'pages:edit_profile' %}" style="text-decoration: none;">Редактировать профиль</a>
-    </button>
-    </div>
-
-<ul class="marker" style="position: relative; left: 300px;">
-  <li>Запланированнные созвоны</li>
-  <li>Действующие созвоны</li>
-  <li>Завершённые созвоны</li>
-</ul>
-  
-  <div class="card" style="width: 850px; height: 450px; position:relative; left: 100px; top: 150px"> 
+<button class="profile_button">
+    Узнать больше...
+</button>
+<button class="profile_edit_button">
+  <a href="{% url 'pages:edit_profile' user.username %}" style="text-decoration: none;">Редактировать профиль</a>
+</button>
+  <div class="card" style="width: 50rem; height: 30rem; position:absolute; top: 200px; left: 600px"> 
     <div class="card-header">
       <div align="center">Запланированнные встречи</div>
     </div>
-    <p style="font-size: 14px;">🟢 <b>12:00 - 12:30</b> >>> созвон по сборке петард из самогона дедушки <b>(@penis228)</b></p>
-    <p style="font-size: 14px;">🟢 <b>12:30 - 13:00</b> >>> созвон по сборке похоронного гроба из Икеи <b>(@kriper2004)</b></p>
-    <p style="font-size: 14px;">🟠 <b>13:00 - 13:30</b> >>> созвон по гойде <b>(@o4ko777)</b></p>
-    <p style="font-size: 14px;">🟠 <b>13:00 - 14:00</b> >>> созвон для электрических чайников <b>(@deposit444)</b></p>
-    <p style="font-size: 14px;">🔴 <b>14:00 - 14:30</b> >>> созвон разрабов FEM <b>(@aristo)</b></p>
+    <ul style="list-style-type: none; padding: 1; margin: 0;">
+      {% for meeting in user_meetings %}
+        <li>
+          {% if meeting.status == "Завершено" %}
+            🔴
+          {% elif meeting.status == "Запланировано" %}
+            🟢
+          {% elif meeting.status == "Отменено" %}
+            🟠
+          {% endif %}
+          {{ meeting.date_time }} - {{ meeting.agenda }} (Статус: {{ meeting.status }})
+        </li>
+      {% endfor %}
+    </ul>
   </div>
 <button class="sheet_button">
   <a href="{% url 'pages:date_selection' %}" style="text-decoration: none; ">Указать расписание</a>
