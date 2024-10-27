@@ -150,7 +150,9 @@ img{
             <a href="{% url 'pages:profile' meeting.host %}" style="text-decoration: none;"> {{ meeting.host }}</a>
             (Статус: {{ meeting.status }})
           {% else %}
-              {{ meeting.date_time }} - {{ meeting.agenda }} Организатор: {{ meeting.host }} (Статус: {{ meeting.status }})
+            {{ meeting.date_time }} - {{ meeting.agenda }} Организатор:
+            <a href="{% url 'pages:profile' meeting.host %}" style="text-decoration: none;"> {{ meeting.host }}</a>
+            (Статус: {{ meeting.status }})
           {% endif %}
         </li>
       {% endfor %}
