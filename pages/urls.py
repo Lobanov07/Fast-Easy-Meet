@@ -33,20 +33,20 @@ urlpatterns = [
         views.create_meeting,
         name="create_meeting"
     ),
-    # path(
-    #     "pages/create_meeting/",
-    #     views.CreateMeeting.as_view(),
-    #     name="create_meeting"
-    # ),
     path(
         "pages/date_selection/",
         views.DateSelection.as_view(),
         name="date_selection"
     ),
     path(
-        "pages/organization_meeting/",
-        views.OrganizationMeeting.as_view(),
-        name="organization"
+        "pages/meeting/<uuid:unique_code>/",
+        views.read_meeting,
+        name="meeting_detail"
+    ),
+    path(
+        'pages/meeting/delete/<uuid:unique_code>/',
+        views.delete_meeting,
+        name='delete_meeting'
     ),
     path(
         'pages/profile/<str:username>/',

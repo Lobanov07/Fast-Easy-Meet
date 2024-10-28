@@ -1,18 +1,12 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from django.utils import timezone
-from django.db.models import Count
-from django.http import Http404
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.views.generic import (
-    ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView)
-from django.urls import reverse
+from django.views.generic import TemplateView
 
 from accounts.models import CustomUser
 from accounts.forms import ProfileEditForm
-from .forms import MeetingForm
-
+from .forms import MeetingCreateForm, MeetingEditForm
+from .models import Meeting
 
 POSTS_PER_PAGE = 10
 
@@ -23,21 +17,51 @@ User = get_user_model()
 @login_required
 def create_meeting(request):
     if request.method == 'POST':
-        form = MeetingForm(request.POST)
+        form = MeetingCreateForm(request.POST)
         if form.is_valid():
             meeting = form.save(commit=False)
             meeting.host = request.user
             meeting.save()
             form.save_m2m()
-            return redirect('pages:organization')
+            return redirect('pages:meeting_detail',
+                            unique_code=meeting.unique_code)
     else:
-        form = MeetingForm()
+        form = MeetingCreateForm()
 
     return render(request, 'pages/create_meeting.html', {'form': form})
 
 
-class OrganizationMeeting(TemplateView):
-    template_name = 'pages/organization_meeting.html'
+@login_required
+def read_meeting(request, unique_code):
+    meeting = get_object_or_404(Meeting, unique_code=unique_code)
+
+    if request.method == 'POST':
+        form = MeetingEditForm(request.POST, instance=meeting)
+        if form.is_valid():
+            form.save()
+            return redirect(
+                'pages:meeting_detail',
+                unique_code=meeting.unique_code)
+    else:
+        form = MeetingEditForm(instance=meeting)
+
+    return render(request,
+                  'pages/meeting_detail.html',
+                  {'form': form, 'meeting': meeting})
+
+
+@login_required
+def delete_meeting(request, unique_code):
+    meeting = get_object_or_404(Meeting, unique_code=unique_code)
+    if request.method == "POST":
+        meeting.delete()
+        return redirect('pages:index')
+
+    return render(request, 'pages/delete_meeting.html', {'meeting': meeting})
+
+
+class MeetingDetail(TemplateView):
+    template_name = 'pages/meeting_detail.html'
 
 
 class DateSelection(TemplateView):
