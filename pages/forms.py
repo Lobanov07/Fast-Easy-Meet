@@ -5,22 +5,35 @@ from django.contrib.auth import get_user_model
 CustomUser = get_user_model()
 
 
-class MeetingCreateForm(forms.ModelForm):
-    class Meta:
-        model = Meeting
-        fields = ['agenda']
-        widgets = {
-            'agenda': forms.Textarea(attrs={'rows': 12,
-                                            "style": "resize: none"}),
-        }
+# class MeetingCreateForm(forms.ModelForm):
+#     class Meta:
+#         model = Meeting
+#         fields = ['agenda']
+#         widgets = {
+#             'agenda': forms.Textarea(attrs={'rows': 12,
+#                                             "style": "resize: none"}),
+#         }
 
 
 class MeetingEditForm(forms.ModelForm):
     class Meta:
         model = Meeting
-        fields = ['date_time', 'status', 'agenda', 'participants']
+        fields = ['title', 'agenda', 'status', 'participants']
         widgets = {
-            'agenda': forms.Textarea(attrs={'rows': 10, 'cols': 80, 'class': 'form-control', 'placeholder': 'Введите повестку встречи...'}),
-            'date_time': forms.DateTimeInput(attrs={'class': 'form-control', 'placeholder': 'Выберите дату и время...'}),
-            'participants': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите участников встречи...'}),
+            'title': forms.TextInput(attrs={'id': 'title'}),
+            'agenda': forms.Textarea(attrs={'id': 'agenda'}),
+            'status': forms.Select(attrs={'id': 'status'}),
+            'participants': forms.TextInput(attrs={'id': 'participants'}),
         }
+
+
+class MeetingForm(forms.ModelForm):
+    class Meta:
+        model = Meeting
+        fields = ['title', 'participants', 'date_time', 'status', 'agenda']
+
+
+class MeetingCreateForm(forms.ModelForm):
+    class Meta:
+        model = Meeting
+        fields = ['title', 'agenda']

@@ -31,10 +31,18 @@ class Schedule(models.Model):
 
 
 class Meeting(models.Model):
+    title = models.CharField(
+        max_length=100,
+        verbose_name="Название встречи",
+        blank=True,
+        null=True,
+    )  # Название встречи
     participants = models.ManyToManyField(
         CustomUser,
         related_name="meetings",
-        verbose_name="Участники"
+        verbose_name="Участники",
+        blank=True,
+        null=True,
     )  # Участники встречи
     date_time = models.DateTimeField(
         verbose_name="Дата встречи",
@@ -42,6 +50,8 @@ class Meeting(models.Model):
         null=True,
     )  # Дата и время встречи
     status = models.CharField(
+        blank=True,
+        null=True,
         max_length=20,
         choices=[
             ("Запланировано", "Запланировано"),
@@ -49,7 +59,6 @@ class Meeting(models.Model):
             ("Отменено", "Отменено"),
         ],
         default="Неизвестно",
-
         verbose_name="Статус"
     )  # Статус встречи
     agenda = models.TextField(
@@ -68,6 +77,11 @@ class Meeting(models.Model):
         related_name="hosted_meetings",
         verbose_name="Хост"
     )  # Создатель встречи
+
+    def save(self, *args, **kwargs):
+        if not self.title:
+            self.title = self.unique_code
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Meeting on {self.date_time} with " + (
