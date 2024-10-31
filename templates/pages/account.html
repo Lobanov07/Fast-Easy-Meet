@@ -41,7 +41,7 @@
   }
   .profile_image_wrap {
     background: #f9f8f8;
-    border-radius: 100%;
+    border-radius: 100px;
     display: flex;
     flex-shrink: 0;
     justify-content: center;
@@ -111,7 +111,7 @@ img{
  
   <div class="roundness" >
     {% if user.profile_picture %}
-      <img alt="logo" src="{{ user.profile_picture.url }}"  class="profile_image_wrap">
+      <img alt="logo" src="{{ user.profile_picture.url }}"  height="100%" width="100%" class="profile_image_wrap">
     {% else %}
       <img src="{% static 'img/no_photo.png' %}" class="profile_image_wrap">
     {% endif %}
