@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Детали встречи
+{% endblock %}
+
+{% block content %}
+<div class="meeting-detail-container">
+    <div class="meeting-edit-header">
+        <h1>{{ meeting.title }}</h1>
+    </div>
+
+    <div class="meeting-detail">
+        <div class="meeting-info">
+            <p><strong>Уникальный код:</strong> {{ meeting.unique_code }}</p>
+            
+            <p><strong>Дата и время:</strong>
+                {% if meeting.date_time %}
+                    {{ meeting.date_time|date:"d M Y, H:i" }}
+                {% else %}
+                    Время ещё не известно
+                {% endif %}
+            </p>
+
+            <p><strong>Статус:</strong> {{ meeting.get_status_display }}</p>
+
+            <p><strong>Повестка:</strong></p>
+            <div class="agenda-content">
+                {{ meeting.agenda|default:"Нет повестки." }}
+            </div>
+        </div>
+
+        <div class="participants-list">
+            <h3>Участники:</h3>
+            <div class="participants-container">
+                {% if meeting.participants.all %}
+                    <ul>
+                        {% for participant in meeting.participants.all %}
+                            <li>{{ forloop.counter }}. {{ participant.username }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Нет участников.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="meeting-actions">
+        <button id="copy-code" class="btn-save green">Скопировать код</button>
+        <button id="generate-time" class="btn-save green">Сгенерировать время встречи</button>
+        <a href="{% url 'pages:meeting_update' unique_code=meeting.unique_code %}" class="btn-save blue">Редактировать</a>
+        <a href="{% url 'pages:meeting_delete' unique_code=meeting.unique_code %}" class="btn-back red">Удалить</a>
+    </div>
+</div>
+
+<script>
+  document.getElementById('copy-code').onclick = function() {
+      const code = "{{ meeting.unique_code }}";
+      const message = `Код вашей встречи: ${code}`;
+      
+      if (navigator.clipboard) {
+          navigator.clipboard.writeText(message).then(() => {
+              alert('Код встречи скопирован в буфер обмена!');
+          }).catch(err => {
+              alert('Не удалось скопировать код: ' + err);
+          });
+      } else {
+          const textArea = document.createElement("textarea");
+          textArea.value = message;
+          document.body.appendChild(textArea);
+          textArea.select();
+          try {
+              document.execCommand('copy');
+              alert('Код встречи скопирован в буфер обмена!');
+          } catch (err) {
+              alert('Не удалось скопировать код: ' + err);
+          }
+          document.body.removeChild(textArea);
+      }
+  };
+
+  document.getElementById('generate-time').onclick = function() {
+      alert('Эта функция ещё недоступна');
+  };
+</script>
+
+<style>
+    .meeting-detail-container {
+        max-width: 1000px; /* Увеличен размер контейнера */
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .meeting-edit-header {
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #333;
+    }
+
+    .meeting-detail {
+        display: flex; /* Используем Flexbox для двухколоночной раскладки */
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .meeting-info {
+        flex: 2; /* Занимает больше пространства */
+        margin-right: 20px; /* Отступ между колонками */
+    }
+
+    .participants-list {
+        flex: 1; /* Занимает пространство для списка участников */
+        background-color: #f1f1f1; /* Цвет фона для списка участников */
+        padding: 15px;
+        border-radius: 5px; /* Закругленные углы */
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Тень */
+        max-height: 300px; /* Максимальная высота для ползунка */
+        overflow: hidden; /* Скрываем переполнение */
+    }
+
+    .participants-container {
+        max-height: 250px; /* Высота для скроллинга участников */
+        overflow-y: auto; /* Ползунок для скроллинга */
+        position: relative; /* Для позиционирования заголовка */
+    }
+
+    .agenda-text {
+        max-height: 150px;
+        overflow-y: auto;
+        word-wrap: break-word;
+        border: 1px solid #ccc;
+        padding: 8px;
+        background-color: #fff;
+        border-radius: 5px;
+    }
+
+    .meeting-actions {
+        text-align: center; /* Центрируем кнопки действий */
+        margin-top: 20px;
+    }
+
+    .btn-save {
+        display: block; /* Кнопки будут одна под другой */
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-bottom: 10px; /* Отступ между кнопками */
+        width: 100%; /* Ширина кнопок */
+        text-align: center; /* Центрируем текст на кнопках */
+    }
+
+    .btn-save.green {
+        background-color: #4CAF50; /* Зеленый для кнопок "Скопировать код" и "Сгенерировать время встречи" */
+    }
+
+    .btn-save.blue {
+        background-color: #007bff; /* Синий для кнопки "Редактировать" */
+    }
+
+    .btn-back.red {
+        background-color: #ff4d4d; /* Красный для кнопки "Удалить" */
+    }
+
+    .btn-back {
+      display: block; /* Кнопки будут одна под другой */
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 10px; /* Отступ между кнопками */
+      width: 100%; /* Ширина кнопок */
+      text-align: center; /* Центрируем текст на кнопках */
+    }
+
+    .agenda-content {
+        max-width: 500px;
+        max-height: 150px; /* Ограничение высоты для повестки */
+        overflow-y: auto; /* Прокрутка при переполнении */
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        background-color: #f9f9f9;
+    }
+
+    .btn-back:hover {
+        text-decoration: underline;
+    }
+
+    .btn-save:hover {
+        opacity: 0.9; /* Эффект наведения */
+    }
+</style>
+{% endblock %}

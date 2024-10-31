@@ -21,6 +21,7 @@ class ScheduleAdmin(admin.ModelAdmin):
 
 class MeetingAdmin(admin.ModelAdmin):
     list_display = (
+        "title",
         "date_time",
         "status",
         "agenda",
@@ -28,7 +29,7 @@ class MeetingAdmin(admin.ModelAdmin):
         "unique_code",
     )
     list_editable = ("status", "agenda")
-    search_fields = ("date_time", "unique_code")
+    search_fields = ("title", "unique_code")
 
 
 admin.site.register(Meeting, MeetingAdmin)

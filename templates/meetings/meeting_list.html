@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Мои встречи
+{% endblock %}
+
+{% block content %}
+<div class="meeting-list-container">
+    <h1>Мои встречи</h1>
+
+    {% if meetings %}
+        <ul class="meeting-list">
+            {% for meeting in meetings %}
+                <li>
+                    <h2>{{ meeting.title }}</h2>
+                    <p><strong>Дата:</strong> {{ meeting.date_time|date:"d M Y, H:i" }}</p>
+                    <p><strong>Статус:</strong> {{ meeting.get_status_display }}</p>
+                    <p><strong>Уникальный код:</strong> {{ meeting.unique_code }}</p>
+                    <a href="{% url 'pages:meeting_detail' unique_code=meeting.unique_code %}">Просмотреть</a>
+                    <a href="{% url 'pages:meeting_update' unique_code=meeting.unique_code %}">Редактировать</a>
+                    <a href="{% url 'pages:meeting_delete' unique_code=meeting.unique_code %}">Удалить</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>У вас пока нет встреч.</p>
+    {% endif %}
+</div>
+
+<style>
+    .meeting-list-container {
+        max-width: 800px; /* Максимальная ширина контейнера */
+        margin: 0 auto; /* Центрирование контейнера */
+        padding: 20px; /* Внутренний отступ */
+        background-color: #f9f9f9; /* Цвет фона контейнера */
+        border-radius: 10px; /* Закругление углов */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Тень контейнера */
+    }
+
+    .meeting-list {
+        list-style-type: none; /* Убираем маркеры списка */
+        padding: 0; /* Убираем внутренние отступы */
+    }
+
+    .meeting-list li {
+        margin-bottom: 20px; /* Отступ между элементами списка */
+        padding: 15px; /* Внутренний отступ для элемента списка */
+        border: 1px solid #ccc; /* Рамка вокруг элемента списка */
+        border-radius: 5px; /* Закругление углов элемента списка */
+        background-color: #fff; /* Цвет фона для элемента списка */
+    }
+
+    .meeting-list h2 {
+        margin: 0 0 10px 0; /* Отступы для заголовка встречи */
+    }
+
+    .meeting-list a {
+        margin-right: 10px; /* Отступ между ссылками */
+        text-decoration: none; /* Убираем подчеркивание */
+        color: #007bff; /* Цвет текста ссылки */
+    }
+
+    .meeting-list a:hover {
+        text-decoration: underline; /* Подчеркивание при наведении */
+    }
+</style>
+{% endblock %}
