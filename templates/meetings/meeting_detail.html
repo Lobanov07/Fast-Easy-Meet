@@ -25,7 +25,7 @@
             <p><strong>Статус:</strong> {{ meeting.get_status_display }}</p>
 
             <p><strong>Повестка:</strong></p>
-            <div class="agenda-text">
+            <div class="agenda-content">
                 {{ meeting.agenda|default:"Нет повестки." }}
             </div>
         </div>
@@ -180,6 +180,16 @@
       margin-bottom: 10px; /* Отступ между кнопками */
       width: 100%; /* Ширина кнопок */
       text-align: center; /* Центрируем текст на кнопках */
+    }
+
+    .agenda-content {
+        max-width: 500px;
+        max-height: 150px; /* Ограничение высоты для повестки */
+        overflow-y: auto; /* Прокрутка при переполнении */
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        background-color: #f9f9f9;
     }
 
     .btn-back:hover {

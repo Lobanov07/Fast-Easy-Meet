@@ -1,14 +1,12 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView, UpdateView
-from django.urls import reverse_lazy, reverse
-from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from accounts.models import CustomUser
 from accounts.forms import ProfileEditForm
-from .forms import MeetingCreateForm, MeetingEditForm, MeetingForm
+from .forms import MeetingCreateForm, MeetingEditForm
 from .models import Meeting
 
 POSTS_PER_PAGE = 10
@@ -16,108 +14,66 @@ POSTS_PER_PAGE = 10
 
 User = get_user_model()
 
+
 class MeetingListView(ListView):
     model = Meeting
-    template_name = "pages/meeting_list.html"
-    context_object_name = "meetings"
+    template_name = 'meetings/meeting_list.html'
+    context_object_name = 'meetings'
+
+    def get_queryset(self):
+        user = self.request.user
+        return Meeting.objects.filter(host=user) | Meeting.objects.filter(participants=user)
+
 
 class MeetingDetailView(DetailView):
     model = Meeting
-    template_name = "pages/meeting_detail.html"
+    template_name = "meetings/meeting_detail.html"
     context_object_name = "meeting"
 
     def get_object(self):
         unique_code = self.kwargs.get("unique_code")
         return get_object_or_404(Meeting, unique_code=unique_code)
 
+
 class MeetingCreateView(CreateView):
     model = Meeting
     form_class = MeetingCreateForm
-    template_name = "pages/meeting_form.html"
+    template_name = "meetings/meeting_form.html"
     success_url = reverse_lazy("pages:meeting_list")
 
     def form_valid(self, form):
         form.instance.host = self.request.user
         form.instance.status = "Запланировано"
         response = super().form_valid(form)
-        # Переходим на страницу деталей созданной встречи
-        return redirect('pages:meeting_detail', unique_code=form.instance.unique_code)
+        return redirect('pages:meeting_detail',
+                        unique_code=form.instance.unique_code)
+
 
 class MeetingUpdateView(UpdateView):
     model = Meeting
-    form_class = MeetingForm
-    template_name = "pages/meeting_form.html"
+    form_class = MeetingEditForm
+    template_name = "meetings/meeting_form.html"
     success_url = reverse_lazy("pages:meeting_list")
 
     def get_object(self):
         unique_code = self.kwargs.get("unique_code")
         return get_object_or_404(Meeting, unique_code=unique_code)
+
+    def form_valid(self, form):
+        meeting = form.save()
+
+        return redirect('pages:meeting_detail',
+                        unique_code=meeting.unique_code)
+
 
 class MeetingDeleteView(DeleteView):
     model = Meeting
-    template_name = "pages/meeting_confirm_delete.html"
+    template_name = "meetings/meeting_confirm_delete.html"
     success_url = reverse_lazy("pages:meeting_list")
 
     def get_object(self):
         unique_code = self.kwargs.get("unique_code")
         return get_object_or_404(Meeting, unique_code=unique_code)
-
-
-# @login_required
-# def create_meeting(request):
-#     if request.method == 'POST':
-#         form = MeetingCreateForm(request.POST)
-#         if form.is_valid():
-#             meeting = form.save(commit=False)
-#             meeting.host = request.user
-#             meeting.save()
-#             form.save_m2m()
-#             return redirect('pages:meeting_detail',
-#                             unique_code=meeting.unique_code)
-#     else:
-#         form = MeetingCreateForm()
-
-#     return render(request, 'pages/create_meeting.html', {'form': form})
-
-
-# @login_required
-# def read_meeting(request, unique_code):
-#     meeting = get_object_or_404(Meeting, unique_code=unique_code)
-#     return render(request,
-#                   'pages/meeting_detail.html',
-#                   {'meeting': meeting})
-
-
-# @login_required
-# def delete_meeting(request, unique_code):
-#     meeting = get_object_or_404(Meeting, unique_code=unique_code)
-#     if request.method == "POST":
-#         meeting.delete()
-#         return redirect('pages:index')
-
-#     return render(request, 'pages/delete_meeting.html', {'meeting': meeting})
-
-
-# def edit_meeting(request, unique_code):
-#     meeting = get_object_or_404(Meeting, unique_code=unique_code)
-    
-#     if request.method == 'POST':
-#         form = MeetingEditForm(request.POST, instance=meeting)
-
-#         if form.is_valid():
-#             form.save()
-#             return redirect('pages:meeting_detail', unique_code=unique_code)
-    
-#     else:
-#         form = MeetingEditForm(instance=meeting)
-
-#     context = {
-#         'form': form,
-#         'meeting': meeting
-#     }
-
-#     return render(request, 'pages/edit_meeting.html', context)
-
 
 
 def edit_profile_view(request, username):
@@ -164,15 +120,15 @@ class CodeOIntroduction(TemplateView):
 
 
 def page_not_found(request, exception):
-    return render(request, 'pages/404.html', status=404)
+    return render(request, 'errors/404.html', status=404)
 
 
 def csrf_failure(request, reason=''):
-    return render(request, 'pages/403csrf.html', status=403)
+    return render(request, 'errors/403csrf.html', status=403)
 
 
 def internal_server_error(request):
-    return render(request, 'pages/500.html', status=500)
+    return render(request, 'errors/500.html', status=500)
 
 
 def profile_view(request, username):

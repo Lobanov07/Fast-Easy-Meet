@@ -21,8 +21,16 @@
 
           {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link {% if view_name == 'pages:profile' %} text-white {% endif %}" href="{% url 'pages:profile' user.username%}">
+            <a class="nav-link {% if view_name == 'pages:profile' %} text-white {% endif %}" href="{% url 'pages:profile' user.username %}">
               Профиль
+            </a>
+          </li>
+          {% endif %}
+
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link {% if view_name == 'pages:meeting_list' %} text-white {% endif %}" href="{% url 'pages:meeting_list' %}">
+              Мои встречи
             </a>
           </li>
           {% endif %}
