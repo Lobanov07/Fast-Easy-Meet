@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block title %}
   Личный кабинет
 {% endblock %}
+
 {% block content %}
   <style>
     @counter-style marker-status {
@@ -26,18 +28,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      position: absolute;
-      top: 145px;
-      left: 175px;
-      visibility: visible;
-    }
-    .round {
-      border-radius: 100%;
-      box-shadow: 0 0 1px #666;
-      align-items: center;
-      display: flex;
-      justify-content: center;
-      visibility: visible;
+      margin-right: 20px;
     }
     .profile_image_wrap {
       background: #f9f8f8;
@@ -45,22 +36,8 @@
       display: flex;
       flex-shrink: 0;
       justify-content: center;
-      margin-inline: auto;
       overflow: hidden;
-      position: absolute;
-    }
-    .sheet_button {
-      width: 800px;
-      height: 50px;
-      border-radius: 10px;
-      background-color: rgb(135, 206, 235);
-      border: 1px solid rgb(51, 61, 100);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: absolute;
-      left: 600px;
-      top: 700px;
+      position: relative;
     }
     .profile_info {
       width: 300px;
@@ -69,28 +46,51 @@
       text-align: center;
       background-color: #f5f5f5;
       color: #333;
+      margin-top: 20px;
+      margin-left: -40px;
       border-radius: 15px;
-      position: absolute;
-      top: 380px;
-      left: 130px;
-      transition: height 0.5s ease;
-      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .card {
+      width: 50rem;
+      height: 480px;
+      margin-left: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .sheet_button,
+    .sheet_edit_button {
+      width: 100%; /* Полная ширина кнопки */
+      height: 50px;
+      border-radius: 5px;
+      background-color: rgb(135, 206, 235);
+      border: 1px solid rgb(51, 61, 100);
+      color: #ffffff;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: auto; /* Отодвигает кнопку вниз */
+      transition: background-color 0.3s ease;
+    }
+    .sheet_button:hover,
+    .sheet_edit_button:hover {
+      background-color: #5bb7de;
     }
     .profile_button,
     .profile_edit_button {
-      width: 80%;
+      width: 100%;
       height: 40px;
-      margin-top: 10px;
-      border-radius: 8px;
-      border: 1px solid #666;
-      background-color: #87ceeb;
-      color: #fff;
+      border-radius: 10px;
+      border: 1px solid rgb(51, 61, 100);
+      background-color: rgb(135, 206, 235);
+      color: #ffffff;
       font-weight: bold;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-inline: auto; /* Центровка кнопок */
+      margin-top: 10px;
       transition: background-color 0.3s ease;
     }
     .profile_button:hover,
@@ -104,81 +104,73 @@
     img {
       max-width: 100%;
     }
+    .container {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      margin-top: 20px;
+    }
+    .profile-section {
+      display: flex;
+      flex-direction: column;
+      margin-right: 20px;
+    }
   </style>
 
-  <div class="roundness">
-    {% if user.profile_picture %}
-      <img alt="logo" src="{{ user.profile_picture.url }}" height="100%" width="100%" class="profile_image_wrap">
-    {% else %}
-      <img src="{% static 'img/no_photo.png' %}" class="profile_image_wrap">
-    {% endif %}
-  </div>
+  <div class="container">
+    <div class="profile-section">
+      <div class="roundness">
+        {% if user.profile_picture %}
+          <img alt="logo" src="{{ user.profile_picture.url }}" height="100%" width="100%" class="profile_image_wrap">
+        {% else %}
+          <img src="{% static 'img/no_photo.png' %}" class="profile_image_wrap">
+        {% endif %}
+      </div>
 
-  <div id="profile-info" class="profile_info">
-    <b>{{ user.username }}</b><br>
-    <b>Дата рождения:</b><br>
-    <span>{{ user.date_of_birth }}</span><br>
-    <b>Электронная почта:</b><br>
-    <span>{{ user.email }}</span><br>
+      <div id="profile-info" class="profile_info">
+        <b>{{ user.username }}</b><br>
+        <b>Дата рождения:</b><br>
+        <span>{{ user.date_of_birth }}</span><br>
+        <b>Электронная почта:</b><br>
+        <span>{{ user.email }}</span><br>
 
-    <div id="more-info" class="more-info">
-      <b>Время подготовки:</b><br>
-      <span>{{ user.preparation_time }}</span><br>
-      <b>Биография:</b><br>
-      <span>{{ user.bio }}</span><br>
+        <div id="more-info" class="more-info">
+          <b>Биография:</b><br>
+          <span>{{ user.bio }}</span><br>
+        </div>
+
+        <button class="profile_button" onclick="toggleMoreInfo()">Узнать больше...</button>
+        <form action="{% url 'pages:edit_profile' user.username %}" target="_self" style="margin-top: 10px;">
+          <button class="profile_edit_button">Редактировать профиль</button>
+        </form>
+      </div>
     </div>
 
-    <button class="profile_button" onclick="toggleMoreInfo()">Узнать больше...</button>
-    <form action="{% url 'pages:edit_profile' user.username %}" target="_self" style="margin-top: 10px;">
-      <button class="profile_edit_button">Редактировать профиль</button>
-    </form>
-  </div>
-
-  <div class="card" style="width: 50rem; height: 30rem; position: absolute; top: 200px; left: 600px">
-    <div class="card-header">
-      <div align="center">Запланированные встречи</div>
+    <div class="card">
+      <div class="card-header">
+        <div align="center">Запланированные встречи</div>
+      </div>
+      <ul style="list-style-type: none; padding: 1; margin: 0;">
+        {% for meeting in user_meetings %}
+          <li>
+            {% if meeting.status == "Завершено" %} 🔴
+            {% elif meeting.status == "Запланировано" %} 🟢
+            {% elif meeting.status == "Отменено" %} 🟠
+            {% endif %}
+            {{ meeting.date_time }} - {{ meeting.agenda }} (Статус: {{ meeting.status }})
+          </li>
+        {% endfor %}
+      </ul>
+      <form action="{% url 'pages:date_selection' %}" target="_self" style="margin-top: auto;">
+        <button class="sheet_button">Указать расписание</button>
+      </form>
     </div>
-    <ul style="list-style-type: none; padding: 1; margin: 0;">
-      {% for meeting in user_meetings %}
-        <li>
-          {% if meeting.status == "Завершено" %}
-            🔴
-          {% elif meeting.status == "Запланировано" %}
-            🟢
-          {% elif meeting.status == "Отменено" %}
-            🟠
-          {% endif %}
-          {% if meeting.agenda|length > 10 %}
-            {{ meeting.date_time }} - {{ meeting.agenda|slice:":10" }}... Организатор:
-            <a href="{% url 'pages:profile' meeting.host %}" style="text-decoration: none;">{{ meeting.host }}</a>
-            (Статус: {{ meeting.status }})
-          {% else %}
-            {{ meeting.date_time }} - {{ meeting.agenda }} Организатор:
-            <a href="{% url 'pages:profile' meeting.host %}" style="text-decoration: none;">{{ meeting.host }}</a>
-            (Статус: {{ meeting.status }})
-          {% endif %}
-        </li>
-      {% endfor %}
-    </ul>
   </div>
-
-  <form action="{% url 'pages:date_selection' %}" target="_self">
-    <button class="sheet_button">Указать расписание</button>
-  </form>
-
-  <div class="col d-flex justify-content-center" style="width: 40rem; height: 55rem;"></div>
 
   <script>
     function toggleMoreInfo() {
       const moreInfo = document.getElementById("more-info");
-      const profileInfo = document.getElementById("profile-info");
-      if (moreInfo.style.display === "none" || moreInfo.style.display === "") {
-        moreInfo.style.display = "block";
-        profileInfo.style.height = "auto";
-      } else {
-        moreInfo.style.display = "none";
-        profileInfo.style.height = "";
-      }
+      moreInfo.style.display = (moreInfo.style.display === "none" || moreInfo.style.display === "") ? "block" : "none";
     }
   </script>
 {% endblock %}
