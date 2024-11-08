@@ -22,7 +22,7 @@
 }
 
 .dark-text {
-    color: #333; /* Темный цвет текста */
+    color: #333; 
 }
 
 .form-block {
@@ -45,44 +45,63 @@
     text-align: center;
 }
 
-.join-btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 169px;
+.join-btn, .join-btn-non-aut {
+    width: 100%;
+    padding: 10px;
     border: none;
     border-radius: 5px;
     font-size: 18px;
     cursor: pointer;
 }
 
+.join-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
 .join-btn:hover {
     background-color: #45a049;
+}
+
+.join-btn-non-aut {
+    background-color: #dc3545;
+    color: white;
+}
+
+.join-btn-non-aut:hover {
+    background-color: #c82333;
 }
 </style>
 
 <div class="join-container">
-    <!-- Заголовок -->
     <div class="header-block">
         <h1 class="dark-text">Присоединение к встрече</h1>
     </div>
 
-    <!-- Форма ввода кода встречи -->
     <div class="form-block">
         <h4><strong>Введите код встречи:</strong></h4>
         <input type="text" placeholder="*код встречи*" class="input-field" id="meeting-code">
     </div>
-
-    <!-- Кнопка присоединиться -->
-    <div class="join-button-block">
-        <button class="join-btn">Присоединиться к встрече</button>
-    </div>
+    {% if user.is_authenticated %}
+        <div class="join-button-block">
+            <button class="join-btn">Присоединиться к встрече</button>
+        </div>
+    {% else %}
+        <div class="join-button-block">
+            <button class="join-btn-non-aut">Войдите в профиль</button>
+        </div>
+    {% endif %}
 </div>
 
-<!-- Скрипт для обработки кнопки -->
 <script>
     document.querySelector('.join-btn').addEventListener('click', function() {
-        // Перенаправление на другую страницу
-        window.location.href = 'http://127.0.0.1:8000'; // Замените '/meeting-details/' на ваш путь
+        window.location.href = 'http://127.0.0.1:8000'; 
+    });
+
+</script>
+<script>
+        document.querySelector('.join-btn-non-aut').addEventListener('click', function() {
+        window.location.href = "{% url 'login' %}"; 
     });
 </script>
 
