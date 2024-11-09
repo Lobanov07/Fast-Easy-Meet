@@ -12,6 +12,7 @@
       symbols: "🟢" "🟠" "🔴";
       suffix: " ";
     }
+
     .marker {
       align-items: center;
       justify-content: center;
@@ -60,7 +61,7 @@
     }
     .sheet_button,
     .sheet_edit_button {
-      width: 100%; /* Полная ширина кнопки */
+      width: 100%; 
       height: 50px;
       border-radius: 5px;
       background-color: rgb(135, 206, 235);
@@ -70,7 +71,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: auto; /* Отодвигает кнопку вниз */
+      margin-top: auto; 
       transition: background-color 0.3s ease;
     }
     .sheet_button:hover,
@@ -109,6 +110,7 @@
       justify-content: flex-start;
       align-items: flex-start;
       margin-top: 20px;
+      margin: auto;
     }
     .profile-section {
       display: flex;
@@ -153,11 +155,22 @@
       <ul style="list-style-type: none; padding: 1; margin: 0;">
         {% for meeting in user_meetings %}
           <li>
-            {% if meeting.status == "Завершено" %} 🔴
-            {% elif meeting.status == "Запланировано" %} 🟢
-            {% elif meeting.status == "Отменено" %} 🟠
+            {% if meeting.status == "Завершено" %}
+              🔴
+            {% elif meeting.status == "Запланировано" %}
+              🟢
+            {% elif meeting.status == "Отменено" %}
+              🟠
             {% endif %}
-            {{ meeting.date_time }} - {{ meeting.agenda }} (Статус: {{ meeting.status }})
+            {% if meeting.agenda|length > 10 %}
+              {{ meeting.date_time }} - {{ meeting.agenda|slice:":10" }}... Организатор: 
+              <a href="{% url 'pages:profile' meeting.host %}" style="text-decoration: none;"> {{ meeting.host }}</a>
+              (Статус: {{ meeting.status }})
+            {% else %}
+              {{ meeting.date_time }} - {{ meeting.agenda }} Организатор:
+              <a href="{% url 'pages:profile' meeting.host %}" style="text-decoration: none;"> {{ meeting.host }}</a>
+              (Статус: {{ meeting.status }})
+            {% endif %}
           </li>
         {% endfor %}
       </ul>
