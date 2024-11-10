@@ -79,8 +79,11 @@
     </div>
 
     <div class="form-block">
-        <h4><strong>Введите код встречи:</strong></h4>
-        <input type="text" placeholder="*код встречи*" class="input-field" id="meeting-code">
+        <form id="join-form">
+            {% csrf_token %}
+            <h4><strong>Введите код встречи:</strong></h4>
+            <input type="text" placeholder="*код встречи*" class="input-field" id="meeting-code">
+        </form>
     </div>
     {% if user.is_authenticated %}
         <div class="join-button-block">
@@ -94,16 +97,36 @@
 </div>
 
 <script>
-    document.querySelector('.join-btn').addEventListener('click', function() {
-        window.location.href = 'http://127.0.0.1:8000'; 
-    });
-
-</script>
-<script>
         document.querySelector('.join-btn-non-aut').addEventListener('click', function() {
         window.location.href = "{% url 'login' %}"; 
     });
 </script>
+<script>
+    document.querySelector('.join-btn').addEventListener('click', function() {
+        const meetingCode = document.getElementById('meeting-code').value;
 
+        fetch("{% url 'pages:join_meeting' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: `meeting_code=${encodeURIComponent(meetingCode)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                window.location.href = "{% url 'pages:index' %}";
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Ошибка:", error);
+            alert("Произошла ошибка. Попробуйте еще раз.");
+        });
+    });
+</script>
 {% endblock %}
 
