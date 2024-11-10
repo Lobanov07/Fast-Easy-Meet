@@ -12,6 +12,8 @@ from accounts.forms import ProfileEditForm
 from .forms import MeetingCreateForm, MeetingEditForm, ScheduleForm
 from .models import Meeting, Schedule
 
+from collections import defaultdict
+
 POSTS_PER_PAGE = 10
 
 User = get_user_model()
@@ -168,6 +170,24 @@ def join_meeting_view(request):
 def schedule_view(request):
     user_meetings = Schedule.objects.filter(user=request.user).order_by('start_time')
 
+    meetings_by_day = []
+    current_day = None
+    current_day_meetings = []
+
+    for meeting in user_meetings:
+        meeting_date = meeting.start_time.date()
+
+        if current_day != meeting_date:
+            if current_day is not None:
+                meetings_by_day.append((current_day, current_day_meetings))
+            current_day = meeting_date
+            current_day_meetings = [meeting]
+        else:
+            current_day_meetings.append(meeting)
+
+    if current_day is not None:
+        meetings_by_day.append((current_day, current_day_meetings))
+
     if request.method == 'POST':
         form = ScheduleForm(request.POST)
         if form.is_valid():
@@ -178,4 +198,7 @@ def schedule_view(request):
     else:
         form = ScheduleForm()
 
-    return render(request, 'pages/schedule.html', {'user_meetings': user_meetings, 'form': form})
+    return render(request, 'pages/schedule.html', {
+        'meetings_by_day': meetings_by_day,
+        'form': form
+    })

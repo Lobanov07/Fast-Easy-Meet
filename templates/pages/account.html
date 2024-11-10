@@ -136,28 +136,20 @@
         <b>Электронная почта:</b><br>
         <span>{{ user.email }}</span><br>
 
-<button class="profile_button">
-    Узнать больше...
-</button>
-{% if user == request.user %}
-  <form action="{% url 'pages:edit_profile' user.username %}" target="_self">
-    <button class="profile_edit_button">
-    Редактировать профиль
-  </button>
-  </form>
-{% endif %}
-
         <div id="more-info" class="more-info">
           <b>Биография:</b><br>
           <span>{{ user.bio }}</span><br>
         </div>
 
         <button class="profile_button" onclick="toggleMoreInfo()">Узнать больше...</button>
+        {% if user == request.user %}
         <form action="{% url 'pages:edit_profile' user.username %}" target="_self" style="margin-top: 10px;">
           <button class="profile_edit_button">Редактировать профиль</button>
         </form>
+        {% endif %}
       </div>
     </div>
+
 
     <div class="card">
       <div class="card-header">
@@ -172,6 +164,8 @@
               🟢
             {% elif meeting.status == "Отменено" %}
               🟠
+            {% else %}
+              ⚪
             {% endif %}
             {% if meeting.agenda|length > 10 %}
               {{ meeting.date_time }} - {{ meeting.agenda|slice:":10" }}... Организатор: 
@@ -185,9 +179,11 @@
           </li>
         {% endfor %}
       </ul>
-      <form action="{% url 'pages:date_selection' %}" target="_self" style="margin-top: auto;">
+      {% if user == request.user %}
+      <form action="{% url 'pages:schedule' %}" target="_self" style="margin-top: auto;">
         <button class="sheet_button">Указать расписание</button>
       </form>
+      {% endif %}
     </div>
   </div>
 
@@ -197,13 +193,4 @@
       moreInfo.style.display = (moreInfo.style.display === "none" || moreInfo.style.display === "") ? "block" : "none";
     }
   </script>
-
-<form action="{% url 'pages:schedule' %}" target="_self">
-  {% if user == request.user %}
-    <button class="sheet_button">
-      Указать расписание
-    </button>
-  {% endif %}
-</form>
-<div class="col d-flex justify-content-center" style="width: 40rem; height: 55rem;"> </div>
 {% endblock %}
