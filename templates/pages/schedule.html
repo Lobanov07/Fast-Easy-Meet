@@ -1,46 +1,97 @@
 {% extends "base.html" %}
+
 {% block title %}
   Расписание
 {% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row">
-      <!-- Левая часть: форма для добавления расписания -->
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            <h3>Добавить расписание</h3>
-          </div>
-          <div class="card-body">
-            <form method="POST">
-              {% csrf_token %}
-              {{ form.as_p }}
-              <button type="submit" class="btn btn-primary">Сохранить</button>
-            </form>
-          </div>
+        <!-- Левая часть: форма для добавления события -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Добавить событие</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
   
-      <!-- Правая часть: список запланированных встреч -->
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            <h3>Запланированные встречи</h3>
-          </div>
-          <ul class="list-group list-group-flush">
-            {% for meeting in user_meetings %}
-            <li class="list-group-item">
-              <strong>{{ meeting.start_time|date:"d M Y H:i" }} - {{ meeting.end_time|date:"d M Y H:i" }}</strong>
-              {% if meeting.description %}
-                : {{ meeting.description }}
-              {% endif %}
-            </li>
-            {% empty %}
-            <li class="list-group-item">Нет запланированных встреч.</li>
-            {% endfor %}
-          </ul>
+        <!-- Правая часть: список встреч, разделённый по дням -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Расписание</h3>
+                </div>
+                <div class="card-body">
+                    {% if meetings_by_day %}
+                        {% for date, meetings in meetings_by_day %}
+                            <div class="day-section">
+
+                                <h4 class="date-header">{{ date|date:"l d.m.y" }}</h4>
+
+                                <ul class="list-group list-group-flush">
+                                    {% for meeting in meetings %}
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between">
+                                                <strong>{{ meeting.start_time|date:"H:i" }} - {{ meeting.end_time|date:"H:i" }}</strong>
+                                                <span class="badge badge-info">{{ meeting.status }}</span>
+                                            </div>
+                                            {% if meeting.description %}
+                                                <p class="meeting-description">{{ meeting.description }}</p>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <hr>
+                        {% endfor %}
+                    {% else %}
+                        <p>Нет запланированных встреч.</p>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .day-section {
+        margin-bottom: 30px;
+    }
+
+    .date-header {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #0056b3;
+        margin-bottom: 10px;
+    }
+
+    .meeting-description {
+        font-size: 0.9rem;
+        color: #555;
+        margin-top: 5px;
+    }
+
+    .list-group-item {
+        border: 1px solid #f1f1f1;
+        margin-bottom: 10px;
+    }
+
+    .badge-info {
+        background-color: #17a2b8;
+    }
+
+    .badge {
+        font-size: 0.9rem;
+    }
+</style>
 {% endblock %}
