@@ -71,6 +71,11 @@ urlpatterns = [
         name='profile'
     ),
     path(
+        'pages/schedule/',
+        views.schedule_view,
+        name='schedule'
+    ),
+    path(
         'pages/edit/<str:username>/',
         views.edit_profile_view,
         name='edit_profile'

@@ -128,11 +128,13 @@ img{
 <button class="profile_button">
     Узнать больше...
 </button>
-<form action="{% url 'pages:edit_profile' user.username %}" target="_self">
-  <button class="profile_edit_button">
-  Редактировать профиль
-</button>
-</form>
+{% if user == request.user %}
+  <form action="{% url 'pages:edit_profile' user.username %}" target="_self">
+    <button class="profile_edit_button">
+    Редактировать профиль
+  </button>
+  </form>
+{% endif %}
 
   <div class="card" style="width: 50rem; height: 30rem; position:absolute; top: 200px; left: 600px"> 
     <div class="card-header">
@@ -161,10 +163,12 @@ img{
       {% endfor %}
     </ul>
   </div>
-<form action="{% url 'pages:date_selection' %}" target="_self">
-<button class="sheet_button">
-  Указать расписание
-</button>
+<form action="{% url 'pages:schedule' %}" target="_self">
+  {% if user == request.user %}
+    <button class="sheet_button">
+      Указать расписание
+    </button>
+  {% endif %}
 </form>
 <div class="col d-flex justify-content-center" style="width: 40rem; height: 55rem;"> </div>
 {% endblock %}
