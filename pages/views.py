@@ -5,6 +5,7 @@ from django.views.generic import TemplateView, UpdateView
 from django.urls import reverse_lazy
 from django.http import Http404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.http import JsonResponse
 
 from accounts.models import CustomUser
 from accounts.forms import ProfileEditForm
@@ -146,22 +147,21 @@ def profile_view(request, username):
     return render(request, 'pages/account.html', context)
 
 
+def join_meeting_view(request):
+    if request.method == "POST" and request.user.is_authenticated:
+        unique_code = request.POST.get("meeting_code")
+        if not unique_code:
+            return JsonResponse({"success": False, "message": "Код встречи отсутствует."})
 
+        meeting = Meeting.objects.filter(unique_code=unique_code).first()
+        if meeting:
+            meeting.participants.add(request.user)
+            meeting.save()
+            return JsonResponse({"success": True, "message": "Вы успешно присоединились к встрече."})
+        else:
+            return JsonResponse({"success": False, "message": "Неверный код встречи."})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return JsonResponse({"success": False, "message": "Требуется авторизация для присоединения к встрече."})
 
 
 @login_required

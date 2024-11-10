@@ -19,6 +19,7 @@ urlpatterns = [
     path('pages/meetings/create/', MeetingCreateView.as_view(), name="meeting_create"),
     path('pages/meetings/<uuid:unique_code>/update/', MeetingUpdateView.as_view(), name="meeting_update"),
     path('pages/meetings/<uuid:unique_code>/delete/', MeetingDeleteView.as_view(), name="meeting_delete"),
+    path('join_meeting/', views.join_meeting_view, name="join_meeting"),
 
     path(
         'pages/code_introduction/',
