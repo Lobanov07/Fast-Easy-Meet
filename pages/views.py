@@ -1,17 +1,18 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView, UpdateView
 from django.urls import reverse_lazy
+from django.http import Http404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.http import JsonResponse
 
 from accounts.models import CustomUser
 from accounts.forms import ProfileEditForm
-from .forms import MeetingCreateForm, MeetingEditForm
-from .models import Meeting
+from .forms import MeetingCreateForm, MeetingEditForm, ScheduleForm
+from .models import Meeting, Schedule
 
 POSTS_PER_PAGE = 10
-
 
 User = get_user_model()
 
@@ -80,6 +81,9 @@ class MeetingDeleteView(DeleteView):
 def edit_profile_view(request, username):
     user = get_object_or_404(CustomUser, username=username)
 
+    if user != request.user:
+        raise Http404("Вы не можете редактировать чужой профиль.")
+
     if request.method == 'POST':
         form = ProfileEditForm(request.POST, request.FILES,
                                instance=user)
@@ -134,6 +138,7 @@ def internal_server_error(request):
 
 def profile_view(request, username):
     user = get_object_or_404(CustomUser, username=username)
+
     user_meetings = user.meetings.all()
     context = {
         'user': user,
@@ -157,3 +162,20 @@ def join_meeting_view(request):
             return JsonResponse({"success": False, "message": "Неверный код встречи."})
 
     return JsonResponse({"success": False, "message": "Требуется авторизация для присоединения к встрече."})
+
+
+@login_required
+def schedule_view(request):
+    user_meetings = Schedule.objects.filter(user=request.user).order_by('start_time')
+
+    if request.method == 'POST':
+        form = ScheduleForm(request.POST)
+        if form.is_valid():
+            new_schedule = form.save(commit=False)
+            new_schedule.user = request.user
+            new_schedule.save()
+            return redirect('pages:schedule')
+    else:
+        form = ScheduleForm()
+
+    return render(request, 'pages/schedule.html', {'user_meetings': user_meetings, 'form': form})
