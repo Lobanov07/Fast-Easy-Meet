@@ -14,6 +14,8 @@
         <div class="meeting-info">
             <p><strong>Уникальный код:</strong> {{ meeting.unique_code }}</p>
             
+            <p><strong>Организатор:</strong> {{ meeting.host }}</p>
+            
             <p><strong>Дата и время:</strong>
                 {% if meeting.date_time %}
                     {{ meeting.date_time|date:"d M Y, H:i" }}
