@@ -17,9 +17,13 @@
                     <p><strong>Дата:</strong> {{ meeting.date_time|date:"d M Y, H:i" }}</p>
                     <p><strong>Статус:</strong> {{ meeting.get_status_display }}</p>
                     <p><strong>Уникальный код:</strong> {{ meeting.unique_code }}</p>
+                    {% if meeting.host == request.user %}
                     <a href="{% url 'pages:meeting_detail' unique_code=meeting.unique_code %}">Просмотреть</a>
                     <a href="{% url 'pages:meeting_update' unique_code=meeting.unique_code %}">Редактировать</a>
                     <a href="{% url 'pages:meeting_delete' unique_code=meeting.unique_code %}">Удалить</a>
+                    {% else %}
+                    <a href="{% url 'pages:meeting_detail' unique_code=meeting.unique_code %}">Просмотреть</a>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
