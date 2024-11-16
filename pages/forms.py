@@ -23,10 +23,10 @@ class ScheduleForm(forms.ModelForm):
         model = Schedule
         fields = ['start_time', 'end_time', 'description']
         widgets = {
-            'description': forms.TextInput(
-                attrs={"style": "resize: none; height: 200px;"}),
+            'description': forms.Textarea(
+                attrs={"style": "resize: none; height: 100px; wigth: 200px; border-radius: 10px; border: 2px solid black; display: inline-block; vertical-align: top;"}),
             'start_time': forms.DateTimeInput(
-                attrs={'type': 'datetime-local'}),
+                attrs={'type': 'datetime-local', "style": "border-radius: 10px"}),
             'end_time': forms.DateTimeInput(
-                attrs={'type': 'datetime-local'}),
+                attrs={'type': 'datetime-local', "style": "border-radius: 10px"}),
         }

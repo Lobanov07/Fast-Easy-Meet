@@ -8,13 +8,29 @@
 <div class="meeting-list-container">
     <h1>Мои встречи</h1>
 
+    <form method="get" class="filter-form">
+        <div class="filter">
+            <label for="host">Организатор:</label>
+            <input type="text" id="host" name="host" value="{{ request.GET.host }}" placeholder="Имя организатора">
+        </div>
+        <div class="filter">
+            <label for="title">Название встречи:</label>
+            <input type="text" id="title" name="title" value="{{ request.GET.title }}" placeholder="Название встречи">
+        </div>
+        <button type="submit">Фильтровать</button>
+    </form>
+
     {% if meetings %}
         <ul class="meeting-list">
             {% for meeting in meetings %}
                 <li>
                     <h2>{{ meeting.title }}</h2>
                     <p><strong>Организатор:</strong> {{ meeting.host }}</p>
+                    {% if meeting.date_time %}
                     <p><strong>Дата:</strong> {{ meeting.date_time|date:"d M Y, H:i" }}</p>
+                    {% else %}
+                    <p><strong>Дата:</strong> Не выбрана</p>
+                    {% endif %}
                     <p><strong>Статус:</strong> {{ meeting.get_status_display }}</p>
                     <p><strong>Уникальный код:</strong> {{ meeting.unique_code }}</p>
                     {% if meeting.host == request.user %}
@@ -30,9 +46,49 @@
     {% else %}
         <p>У вас пока нет встреч.</p>
     {% endif %}
+    {% include "includes/paginator.html" %}
 </div>
 
 <style>
+     .filter-form {
+        margin-bottom: 20px; /* Расстояние между формой и основным блоком */
+    }
+    
+    .filter {
+        margin-bottom: 15px; /* Расстояние между полями формы */
+    }
+    
+    .filter label {
+        display: block;
+        margin-bottom: 5px; /* Отступ сверху для лейбла */
+        font-weight: bold;
+    }
+    
+    .filter input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    .filter input:focus {
+        border-color: #007BFF;
+        outline: none;
+    }
+    
+    button[type="submit"] {
+        padding: 10px 15px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
     .meeting-list-container {
         max-width: 800px; 
         margin: 0 auto; 
