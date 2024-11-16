@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.http import Http404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.http import JsonResponse
+from django.db.models import Q
 
 from accounts.models import CustomUser
 from accounts.forms import ProfileEditForm
@@ -23,11 +24,23 @@ class MeetingListView(ListView):
     model = Meeting
     template_name = 'meetings/meeting_list.html'
     context_object_name = 'meetings'
-    paginate_by = 5
+    paginate_by = 3
 
     def get_queryset(self):
         user = self.request.user
-        return Meeting.objects.filter(host=user) | Meeting.objects.filter(participants=user)
+        queryset = Meeting.objects.filter(Q(host=user) | Q(participants=user))
+
+        # Фильтрация по организатору (host)
+        host_filter = self.request.GET.get('host')
+        if host_filter:
+            queryset = queryset.filter(host__username__icontains=host_filter)
+
+        # Фильтрация по названию встречи (title)
+        title_filter = self.request.GET.get('title')
+        if title_filter:
+            queryset = queryset.filter(title__icontains=title_filter)
+
+        return queryset
 
 
 class MeetingDetailView(DetailView):
