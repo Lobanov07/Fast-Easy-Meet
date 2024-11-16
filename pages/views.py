@@ -184,49 +184,13 @@ def join_meeting_view(request):
     return JsonResponse({"success": False, "message": "Требуется авторизация для присоединения к встрече."})
 
 
-# @login_required
-# def schedule_view(request):
-#     user_meetings = Schedule.objects.filter(user=request.user).order_by('start_time')
-
-#     meetings_by_day = []
-#     current_day = None
-#     current_day_meetings = []
-
-#     for meeting in user_meetings:
-#         meeting_date = meeting.start_time.date()
-
-#         if current_day != meeting_date:
-#             if current_day is not None:
-#                 meetings_by_day.append((current_day, current_day_meetings))
-#             current_day = meeting_date
-#             current_day_meetings = [meeting]
-#         else:
-#             current_day_meetings.append(meeting)
-
-#     if current_day is not None:
-#         meetings_by_day.append((current_day, current_day_meetings))
-
-#     if request.method == 'POST':
-#         form = ScheduleForm(request.POST)
-#         if form.is_valid():
-#             new_schedule = form.save(commit=False)
-#             new_schedule.user = request.user
-#             new_schedule.save()
-#             return redirect('pages:schedule')
-#     else:
-#         form = ScheduleForm()
-
-#     return render(request, 'pages/schedule.html', {
-#         'meetings_by_day': meetings_by_day,
-#         'form': form
-#     })
 @method_decorator(login_required, name='dispatch')
 class ScheduleView(View):
     def get(self, request):
-        # Получаем расписание пользователя
+
         user_meetings = Schedule.objects.filter(user=request.user).order_by('start_time')
 
-        # Группируем встречи по дням
+
         meetings_by_day = []
         current_day = None
         current_day_meetings = []
@@ -245,8 +209,8 @@ class ScheduleView(View):
         if current_day is not None:
             meetings_by_day.append((current_day, current_day_meetings))
 
-        # Пагинация для встреч
-        paginator = Paginator(meetings_by_day, 3)  # 3 встречи на страницу
+
+        paginator = Paginator(meetings_by_day, 3)  
         page_number = request.GET.get('page')
         paginated_meetings = paginator.get_page(page_number)
 
@@ -263,5 +227,5 @@ class ScheduleView(View):
             new_schedule = form.save(commit=False)
             new_schedule.user = request.user
             new_schedule.save()
-            return redirect('pages:schedule')  # Перенаправляем обратно на страницу расписания
+            return redirect('pages:schedule')
         return render(request, 'pages/schedule.html', {'form': form})

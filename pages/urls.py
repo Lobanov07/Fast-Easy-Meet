@@ -41,41 +41,19 @@ urlpatterns = [
         views.HomePage.as_view(),
         name="index"
     ),
-    # path(
-    #     "pages/create_meeting/",
-    #     views.create_meeting,
-    #     name="create_meeting"
-    # ),
+
     path(
         "pages/date_selection/",
         views.DateSelection.as_view(),
         name="date_selection"
     ),
-    # path(
-    #     "pages/meeting/<uuid:unique_code>/",
-    #     views.read_meeting,
-    #     name="meeting_detail"
-    # ),
-    #  path(
-    #     "pages/meeting/edit/<uuid:unique_code>/",
-    #     views.edit_meeting,
-    #     name="edit_meeting"
-    # ),
-    # path(
-    #     'pages/meeting/delete/<uuid:unique_code>/',
-    #     views.delete_meeting,
-    #     name='delete_meeting'
-    # ),
+
     path(
         'pages/profile/<str:username>/',
         views.profile_view,
         name='profile'
     ),
-    # path(
-    #     'pages/schedule/',
-    #     views.schedule_view,
-    #     name='schedule'
-    # ),
+
     path(
         'pages/schedule/',
         views.ScheduleView.as_view(),
