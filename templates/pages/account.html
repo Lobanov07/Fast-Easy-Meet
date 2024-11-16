@@ -132,13 +132,26 @@
       <div id="profile-info" class="profile_info">
         <b>{{ user.username }}</b><br>
         <b>Дата рождения:</b><br>
+        {% if user.date_of_birth %}
         <span>{{ user.date_of_birth }}</span><br>
+        {% else %}
+        <span>Не указана</span><br>
+        {% endif %}
         <b>Электронная почта:</b><br>
+        {% if user.email %}
         <span>{{ user.email }}</span><br>
+        {% else %}
+        <span>Не указана</span><br>
+        {% endif %}
+        
 
         <div id="more-info" class="more-info">
           <b>Биография:</b><br>
+          {% if user.bio %}
           <span>{{ user.bio }}</span><br>
+          {% else %}
+        <span>Пусто</span><br>
+        {% endif %}
         </div>
 
         <button class="profile_button" onclick="toggleMoreInfo()">Узнать больше...</button>
