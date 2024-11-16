@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-  
+
         <!-- Правая часть: список встреч, разделённый по дням -->
         <div class="col-md-6">
             <div class="card">
@@ -33,7 +33,6 @@
                     {% if meetings_by_day %}
                         {% for date, meetings in meetings_by_day %}
                             <div class="day-section">
-
                                 <h4 class="date-header">{{ date|date:"l d.m.y" }}</h4>
 
                                 <ul class="list-group list-group-flush">
@@ -52,6 +51,25 @@
                             </div>
                             <hr>
                         {% endfor %}
+
+                        <!-- Пагинация -->
+                        <div class="pagination">
+                            <span class="step-links">
+                                {% if meetings_by_day.has_previous %}
+                                    <a href="?page=1">&laquo; первая</a>
+                                    <a href="?page={{ meetings_by_day.previous_page_number }}">предыдущая</a>
+                                {% endif %}
+
+                                <span class="current">
+                                    Страница {{ meetings_by_day.number }} из {{ meetings_by_day.paginator.num_pages }}.
+                                </span>
+
+                                {% if meetings_by_day.has_next %}
+                                    <a href="?page={{ meetings_by_day.next_page_number }}">следующая</a>
+                                    <a href="?page={{ meetings_by_day.paginator.num_pages }}">последняя &raquo;</a>
+                                {% endif %}
+                            </span>
+                        </div>
                     {% else %}
                         <p>Нет запланированных встреч.</p>
                     {% endif %}
@@ -60,6 +78,7 @@
         </div>
     </div>
 </div>
+
 {% block styles %}
 <style>
     .day-section {
@@ -91,12 +110,35 @@
     .badge {
         font-size: 0.9rem;
     }
-    .card-body{
+
+    .card-body {
         overflow-y: auto;
         height: 500px;
+    }
+
+    .pagination {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .pagination a {
+        padding: 5px 10px;
+        text-decoration: none;
+        border: 1px solid #ddd;
+        margin: 0 2px;
+        color: #007bff;
+    }
+
+    .pagination .current {
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        background-color: #007bff;
+        color: white;
+    }
+
+    .pagination .step-links a:hover {
+        background-color: #f8f9fa;
     }
 </style>
 {% endblock %}
 {% endblock %}
-
-

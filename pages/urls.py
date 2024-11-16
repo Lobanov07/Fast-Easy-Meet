@@ -71,9 +71,14 @@ urlpatterns = [
         views.profile_view,
         name='profile'
     ),
+    # path(
+    #     'pages/schedule/',
+    #     views.schedule_view,
+    #     name='schedule'
+    # ),
     path(
         'pages/schedule/',
-        views.schedule_view,
+        views.ScheduleView.as_view(),
         name='schedule'
     ),
     path(

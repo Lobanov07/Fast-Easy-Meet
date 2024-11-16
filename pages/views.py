@@ -4,8 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView, UpdateView
 from django.urls import reverse_lazy
 from django.http import Http404
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.core.paginator import Paginator
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from django.http import JsonResponse
+from django.utils.decorators import method_decorator
 from django.db.models import Q
 
 from accounts.models import CustomUser
@@ -182,39 +184,84 @@ def join_meeting_view(request):
     return JsonResponse({"success": False, "message": "Требуется авторизация для присоединения к встрече."})
 
 
-@login_required
-def schedule_view(request):
-    user_meetings = Schedule.objects.filter(user=request.user).order_by('start_time')
+# @login_required
+# def schedule_view(request):
+#     user_meetings = Schedule.objects.filter(user=request.user).order_by('start_time')
 
-    meetings_by_day = []
-    current_day = None
-    current_day_meetings = []
+#     meetings_by_day = []
+#     current_day = None
+#     current_day_meetings = []
 
-    for meeting in user_meetings:
-        meeting_date = meeting.start_time.date()
+#     for meeting in user_meetings:
+#         meeting_date = meeting.start_time.date()
 
-        if current_day != meeting_date:
-            if current_day is not None:
-                meetings_by_day.append((current_day, current_day_meetings))
-            current_day = meeting_date
-            current_day_meetings = [meeting]
-        else:
-            current_day_meetings.append(meeting)
+#         if current_day != meeting_date:
+#             if current_day is not None:
+#                 meetings_by_day.append((current_day, current_day_meetings))
+#             current_day = meeting_date
+#             current_day_meetings = [meeting]
+#         else:
+#             current_day_meetings.append(meeting)
 
-    if current_day is not None:
-        meetings_by_day.append((current_day, current_day_meetings))
+#     if current_day is not None:
+#         meetings_by_day.append((current_day, current_day_meetings))
 
-    if request.method == 'POST':
+#     if request.method == 'POST':
+#         form = ScheduleForm(request.POST)
+#         if form.is_valid():
+#             new_schedule = form.save(commit=False)
+#             new_schedule.user = request.user
+#             new_schedule.save()
+#             return redirect('pages:schedule')
+#     else:
+#         form = ScheduleForm()
+
+#     return render(request, 'pages/schedule.html', {
+#         'meetings_by_day': meetings_by_day,
+#         'form': form
+#     })
+@method_decorator(login_required, name='dispatch')
+class ScheduleView(View):
+    def get(self, request):
+        # Получаем расписание пользователя
+        user_meetings = Schedule.objects.filter(user=request.user).order_by('start_time')
+
+        # Группируем встречи по дням
+        meetings_by_day = []
+        current_day = None
+        current_day_meetings = []
+
+        for meeting in user_meetings:
+            meeting_date = meeting.start_time.date()
+
+            if current_day != meeting_date:
+                if current_day is not None:
+                    meetings_by_day.append((current_day, current_day_meetings))
+                current_day = meeting_date
+                current_day_meetings = [meeting]
+            else:
+                current_day_meetings.append(meeting)
+
+        if current_day is not None:
+            meetings_by_day.append((current_day, current_day_meetings))
+
+        # Пагинация для встреч
+        paginator = Paginator(meetings_by_day, 3)  # 3 встречи на страницу
+        page_number = request.GET.get('page')
+        paginated_meetings = paginator.get_page(page_number)
+
+        form = ScheduleForm()
+
+        return render(request, 'pages/schedule.html', {
+            'meetings_by_day': paginated_meetings,
+            'form': form
+        })
+
+    def post(self, request):
         form = ScheduleForm(request.POST)
         if form.is_valid():
             new_schedule = form.save(commit=False)
             new_schedule.user = request.user
             new_schedule.save()
-            return redirect('pages:schedule')
-    else:
-        form = ScheduleForm()
-
-    return render(request, 'pages/schedule.html', {
-        'meetings_by_day': meetings_by_day,
-        'form': form
-    })
+            return redirect('pages:schedule')  # Перенаправляем обратно на страницу расписания
+        return render(request, 'pages/schedule.html', {'form': form})
