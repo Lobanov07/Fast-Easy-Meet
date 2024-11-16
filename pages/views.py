@@ -62,7 +62,9 @@ class MeetingUpdateView(UpdateView):
 
     def get_object(self):
         unique_code = self.kwargs.get("unique_code")
-        return get_object_or_404(Meeting, unique_code=unique_code)
+        meeting = get_object_or_404(Meeting, unique_code=unique_code)
+        if meeting.host != self.request.user:
+            raise Http404("Вы не можете редактировать чужую встречу.")
 
     def form_valid(self, form):
         meeting = form.save()
