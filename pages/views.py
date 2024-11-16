@@ -23,6 +23,7 @@ class MeetingListView(ListView):
     model = Meeting
     template_name = 'meetings/meeting_list.html'
     context_object_name = 'meetings'
+    paginate_by = 5
 
     def get_queryset(self):
         user = self.request.user
