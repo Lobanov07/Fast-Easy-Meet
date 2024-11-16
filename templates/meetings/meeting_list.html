@@ -26,7 +26,11 @@
                 <li>
                     <h2>{{ meeting.title }}</h2>
                     <p><strong>Организатор:</strong> {{ meeting.host }}</p>
+                    {% if meeting.date_time %}
                     <p><strong>Дата:</strong> {{ meeting.date_time|date:"d M Y, H:i" }}</p>
+                    {% else %}
+                    <p><strong>Дата:</strong> Не выбрана</p>
+                    {% endif %}
                     <p><strong>Статус:</strong> {{ meeting.get_status_display }}</p>
                     <p><strong>Уникальный код:</strong> {{ meeting.unique_code }}</p>
                     {% if meeting.host == request.user %}
