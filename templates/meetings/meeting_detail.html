@@ -14,6 +14,8 @@
         <div class="meeting-info">
             <p><strong>Уникальный код:</strong> {{ meeting.unique_code }}</p>
             
+            <p><strong>Организатор:</strong> {{ meeting.host }}</p>
+
             <p><strong>Дата и время:</strong>
                 {% if meeting.date_time %}
                     {{ meeting.date_time|date:"d M Y, H:i" }}
@@ -45,13 +47,18 @@
             </div>
         </div>
     </div>
-
+    {% if meeting.host == request.user %}
     <div class="meeting-actions">
         <button id="copy-code" class="btn-save green">Скопировать код</button>
         <button id="generate-time" class="btn-save green">Сгенерировать время встречи</button>
         <a href="{% url 'pages:meeting_update' unique_code=meeting.unique_code %}" class="btn-save blue">Редактировать</a>
         <a href="{% url 'pages:meeting_delete' unique_code=meeting.unique_code %}" class="btn-back red">Удалить</a>
     </div>
+    {% else %}
+    <div class="meeting-actions">
+        <button id="copy-code" class="btn-save green">Скопировать код</button>
+    </div>
+    {% endif %}
 </div>
 
 <script>
@@ -87,7 +94,7 @@
 
 <style>
     .meeting-detail-container {
-        max-width: 1000px; /* Увеличен размер контейнера */
+        max-width: 1000px; 
         margin: 0 auto;
         padding: 20px;
         background-color: #f9f9f9;
@@ -103,30 +110,30 @@
     }
 
     .meeting-detail {
-        display: flex; /* Используем Flexbox для двухколоночной раскладки */
+        display: flex; 
         justify-content: space-between;
         margin-bottom: 20px;
     }
 
     .meeting-info {
-        flex: 2; /* Занимает больше пространства */
-        margin-right: 20px; /* Отступ между колонками */
+        flex: 2; 
+        margin-right: 20px; 
     }
 
     .participants-list {
-        flex: 1; /* Занимает пространство для списка участников */
-        background-color: #f1f1f1; /* Цвет фона для списка участников */
+        flex: 1; 
+        background-color: #f1f1f1; 
         padding: 15px;
-        border-radius: 5px; /* Закругленные углы */
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Тень */
-        max-height: 300px; /* Максимальная высота для ползунка */
-        overflow: hidden; /* Скрываем переполнение */
+        border-radius: 5px; 
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        max-height: 300px; 
+        overflow: hidden; 
     }
 
     .participants-container {
-        max-height: 250px; /* Высота для скроллинга участников */
-        overflow-y: auto; /* Ползунок для скроллинга */
-        position: relative; /* Для позиционирования заголовка */
+        max-height: 250px; 
+        overflow-y: auto; 
+        position: relative; 
     }
 
     .agenda-text {
@@ -140,52 +147,52 @@
     }
 
     .meeting-actions {
-        text-align: center; /* Центрируем кнопки действий */
+        text-align: center; 
         margin-top: 20px;
     }
 
     .btn-save {
-        display: block; /* Кнопки будут одна под другой */
+        display: block; 
         color: white;
         padding: 10px;
         border: none;
         border-radius: 5px;
         font-size: 16px;
         cursor: pointer;
-        margin-bottom: 10px; /* Отступ между кнопками */
-        width: 100%; /* Ширина кнопок */
-        text-align: center; /* Центрируем текст на кнопках */
+        margin-bottom: 10px; 
+        width: 100%; 
+        text-align: center; 
     }
 
     .btn-save.green {
-        background-color: #4CAF50; /* Зеленый для кнопок "Скопировать код" и "Сгенерировать время встречи" */
+        background-color: #4CAF50; 
     }
 
     .btn-save.blue {
-        background-color: #007bff; /* Синий для кнопки "Редактировать" */
+        background-color: #007bff; 
     }
 
     .btn-back.red {
-        background-color: #ff4d4d; /* Красный для кнопки "Удалить" */
+        background-color: #ff4d4d; 
     }
 
     .btn-back {
-      display: block; /* Кнопки будут одна под другой */
+      display: block; 
       color: white;
       padding: 10px;
       border: none;
       border-radius: 5px;
       font-size: 16px;
       cursor: pointer;
-      margin-bottom: 10px; /* Отступ между кнопками */
-      width: 100%; /* Ширина кнопок */
-      text-align: center; /* Центрируем текст на кнопках */
+      margin-bottom: 10px; 
+      width: 100%; 
+      text-align: center; 
     }
 
     .agenda-content {
         max-width: 500px;
-        max-height: 150px; /* Ограничение высоты для повестки */
-        overflow-y: auto; /* Прокрутка при переполнении */
+        max-height: 150px; 
+        overflow-y: auto; 
         border: 1px solid #ddd;
         border-radius: 5px;
         padding: 10px;
@@ -197,7 +204,7 @@
     }
 
     .btn-save:hover {
-        opacity: 0.9; /* Эффект наведения */
+        opacity: 0.9; 
     }
 </style>
 {% endblock %}
