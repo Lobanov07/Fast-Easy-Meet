@@ -14,6 +14,8 @@ from django.conf.urls.static import static
 app_name = "pages"
 
 urlpatterns = [
+
+    path('meeting/<uuid:unique_code>/generate_time/', views.generate_meeting_time, name='generate_meeting_time'),
     path('meetings/', MeetingListView.as_view(), name="meeting_list"),
     path('pages/meetings/<uuid:unique_code>/', MeetingDetailView.as_view(), name="meeting_detail"),
     path('pages/meetings/create/', MeetingCreateView.as_view(), name="meeting_create"),

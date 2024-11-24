@@ -49,6 +49,11 @@ class Meeting(models.Model):
         blank=True,
         null=True,
     )  # Дата и время встречи
+    preferred_date = models.DateField(
+        verbose_name="Предпочтительная дата встречи",
+        blank=True,
+        null=True,
+    )  # Предпочтительная дата встречи
     status = models.CharField(
         blank=True,
         null=True,
@@ -88,6 +93,6 @@ class Meeting(models.Model):
                f"{', '.join([str(participant) for participant in self.participants.all()])}")
 
     class Meta:
-        ordering = ["date_time"]  # Сортировка по времени встречи
+        ordering = ["date_time"]
         verbose_name = "встреча"
         verbose_name_plural = "Встречи"

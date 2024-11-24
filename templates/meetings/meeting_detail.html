@@ -50,7 +50,7 @@
     {% if meeting.host == request.user %}
     <div class="meeting-actions">
         <button id="copy-code" class="btn-save green">Скопировать код</button>
-        <button id="generate-time" class="btn-save green">Сгенерировать время встречи</button>
+        <button id="generate_time_button" class="btn-save green">Сгенерировать время</button>
         <a href="{% url 'pages:meeting_update' unique_code=meeting.unique_code %}" class="btn-save blue">Редактировать</a>
         <a href="{% url 'pages:meeting_delete' unique_code=meeting.unique_code %}" class="btn-back red">Удалить</a>
     </div>
@@ -60,36 +60,52 @@
     </div>
     {% endif %}
 </div>
-
 <script>
-  document.getElementById('copy-code').onclick = function() {
-      const code = "{{ meeting.unique_code }}";
-      const message = `Код вашей встречи: ${code}`;
-      
-      if (navigator.clipboard) {
-          navigator.clipboard.writeText(message).then(() => {
-              alert('Код встречи скопирован в буфер обмена!');
-          }).catch(err => {
-              alert('Не удалось скопировать код: ' + err);
-          });
-      } else {
-          const textArea = document.createElement("textarea");
-          textArea.value = message;
-          document.body.appendChild(textArea);
-          textArea.select();
-          try {
-              document.execCommand('copy');
-              alert('Код встречи скопирован в буфер обмена!');
-          } catch (err) {
-              alert('Не удалось скопировать код: ' + err);
-          }
-          document.body.removeChild(textArea);
-      }
-  };
-
-  document.getElementById('generate-time').onclick = function() {
-      alert('Эта функция ещё недоступна');
-  };
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('copy-code').onclick = function() {
+            const code = "{{ meeting.unique_code }}";
+            const message = `Код вашей встречи: ${code}`;
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(message).then(() => {
+                    alert('Код встречи скопирован в буфер обмена!');
+                }).catch(err => {
+                    alert('Не удалось скопировать код: ' + err);
+                });
+            } else {
+                const textArea = document.createElement("textarea");
+                textArea.value = message;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    alert('Код встречи скопирован в буфер обмена!');
+                } catch (err) {
+                    alert('Не удалось скопировать код: ' + err);
+                }
+                document.body.removeChild(textArea);
+            }
+        };
+    
+        document.getElementById('generate_time_button').onclick = function() {
+            $.ajax({
+                url: "{% url 'pages:generate_meeting_time' unique_code=meeting.unique_code %}",
+                type: "GET",
+                success: function(response) {
+                    if (response.status === "success") {
+                        $("#meeting_time").text(response.best_time);
+                        $("#result").html("<p>Время встречи успешно выбрано: " + response.best_time + "</p>");
+                        location.reload(); 
+                    } else {
+                        $("#result").html("<p>" + response.message + "</p>");
+                    }
+                },
+                error: function() {
+                    $("#result").html("<p>Ошибка при генерации времени!</p>");
+                }
+            });
+        };
+    });
 </script>
 
 <style>
