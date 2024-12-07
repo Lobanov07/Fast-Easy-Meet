@@ -14,7 +14,7 @@ from accounts.models import CustomUser
 from accounts.forms import ProfileEditForm
 from .forms import MeetingCreateForm, MeetingEditForm, ScheduleForm
 from .models import Meeting, Schedule
-from .utils import generate_possible_times, count_available_participants
+from .utils import find_time
 
 
 POSTS_PER_PAGE = 10
@@ -36,16 +36,7 @@ def generate_meeting_time(request, unique_code):
     if not schedules:
         return JsonResponse({"status": "error", "message": "У участников нет расписания"})
 
-    possible_times = generate_possible_times(preferred_date)
-
-    best_time = None
-    max_participants = 0
-
-    for time in possible_times:
-        available_participants = count_available_participants(time, schedules)
-        if available_participants > max_participants:
-            best_time = time
-            max_participants = available_participants
+    best_time = find_time(schedules, preferred_date)
 
     if best_time:
         meeting.date_time = best_time
