@@ -14,7 +14,7 @@ def generate_possible_times(preferred_date):
         start_of_day, timezone.get_current_timezone()
         )
 
-    for i in range(0, 23): 
+    for i in range(7, 23):
         possible_times.append(start_of_day + timedelta(hours=i))
 
     return possible_times
