@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    {% if meeting.host == request.user %}
+    {% if meeting.host == request.user or request.user.is_staff %}
     <div class="meeting-actions">
         <button id="copy-code" class="btn-save green">Скопировать код</button>
         <button id="generate_time_button" class="btn-save green">Сгенерировать время</button>

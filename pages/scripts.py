@@ -1,55 +1,103 @@
-from faker import Faker
 from accounts.models import CustomUser
-from django.utils import timezone
+from .models import Meeting, Schedule
+from faker import Faker
 import random
+from django.utils import timezone
 from datetime import timedelta
-from .models import Schedule
 
 fake = Faker()
 
-
-def create_fake_user():
-
-    user = CustomUser.objects.create(
-        username=fake.user_name(),
-        email=fake.email(),
-        first_name=fake.first_name(),
-        last_name=fake.last_name(),
-        date_of_birth=fake.date_of_birth(minimum_age=18, maximum_age=80),
-        phone_number=fake.phone_number(),
-        bio=fake.text(),
-    )
-    return user
-
-
-def create_users(num_users=10000):
-
-    users = []
-    for _ in range(num_users):
-        user = create_fake_user()
-        users.append(user)
-    print(f'{num_users} пользователей успешно созданы!')
-
-
-def create_fake_schedule(user, num_entries=10):
-    start_time = timezone.now()
-    for _ in range(num_entries):
-
-        duration = random.randint(30, 120)
-        end_time = start_time + timedelta(minutes=duration)
-        description = fake.text(max_nb_chars=200)
-
-        Schedule.objects.create(
-            user=user,
-            start_time=start_time,
-            end_time=end_time,
-            description=description
+def create_femadmin():
+    try:
+        femadmin = CustomUser.objects.get(username='FEMadmin')
+        print("Пользователь FEMadmin уже существует.")
+    except CustomUser.DoesNotExist:
+        femadmin = CustomUser.objects.create_superuser(
+            username='FEMadmin',
+            password='adminpassword123',
+            email='femadmin@example.com'
         )
+        print("Пользователь FEMadmin был создан.")
+    return femadmin
 
-        start_time = end_time + timedelta(minutes=random.randint(10, 60))
+def create_users(num_users=10):
+    users = []
+    existing_usernames = set()
+
+    for _ in range(num_users):
+        username = fake.user_name()
+
+        while username in existing_usernames:
+            username = fake.user_name()
+
+        existing_usernames.add(username)
+
+        user = CustomUser(
+            username=username,
+            first_name=fake.first_name(),
+            last_name=fake.last_name(),
+            email=fake.email(),
+            password=fake.password(),
+            bio=fake.text(),
+            date_of_birth=fake.date_of_birth(),
+            phone_number=fake.phone_number(),
+            profile_picture=None,
+        )
+        users.append(user)
+
+    CustomUser.objects.bulk_create(users)
+    print(f"{num_users} пользователей успешно созданы!")
+    return users
+
+
+
+def create_meeting():
+    femadmin = create_femadmin()
+
+    meeting = Meeting.objects.create(
+        title="Общее собрание",
+        host=femadmin,
+        status="Запланировано",
+    )
+
+    print(f'Встреча "{meeting.title}" была создана с хостом {meeting.host.username}, время начала: {meeting.date_time}')
+    
+    return meeting
+
+def assign_users_to_meeting(meeting):
+    users = CustomUser.objects.all()
+    meeting.participants.set(users)
+    print(f"{len(users)} пользователей были добавлены к встрече.")
 
 def create_schedules_for_all_users():
     users = CustomUser.objects.all()
     for user in users:
-        create_fake_schedule(user, num_entries=random.randint(5, 15))
-    print("Записи расписания для всех пользователей созданы!")
+        create_random_schedule_for_user(user)
+    print(f"Созданы случайные расписания для {len(users)} пользователей на 15 декабря.")
+
+
+def create_random_schedule_for_user(user):
+    """
+    Функция генерирует три случайных расписания для каждого пользователя на 15 декабря.
+    """
+    schedules = []
+
+    fixed_date = timezone.make_aware(timezone.datetime(2024, 12, 15, 0, 0))
+    for _ in range(3):
+        random_hour = random.randint(8, 18)
+        random_minute = random.randint(0, 59)
+        start_time = fixed_date + timedelta(hours=random_hour, minutes=random_minute)
+
+        duration_minutes = random.randint(30, 120)
+        end_time = start_time + timedelta(minutes=duration_minutes)
+
+        schedule = Schedule(
+            user=user,
+            start_time=start_time,
+            end_time=end_time,
+            description=f"Случайное расписание для пользователя {user.username} на 15 декабря"
+        )
+        schedules.append(schedule)
+
+    Schedule.objects.bulk_create(schedules)
+    print(f"Созданы 3 случайных расписания для пользователя {user.username} на 15 декабря")
