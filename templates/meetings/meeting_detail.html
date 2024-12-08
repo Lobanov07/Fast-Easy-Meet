@@ -24,6 +24,14 @@
                 {% endif %}
             </p>
 
+            <p><strong>Предпочтительная дата встречи:</strong> 
+                {% if meeting.preferred_date %}
+                    {{ meeting.preferred_date }}
+                {% else %}
+                    Дата ещё не известна
+                {% endif %}
+
+            
             <p><strong>Статус:</strong> {{ meeting.get_status_display }}</p>
 
             <p><strong>Повестка:</strong></p>
