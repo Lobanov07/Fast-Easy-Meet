@@ -54,7 +54,7 @@ class MeetingListView(ListView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Meeting.objects.filter(Q(host=user) | Q(participants=user))
+        queryset = Meeting.objects.filter(Q(host=user) | Q(participants=user)).distinct()
 
         host_filter = self.request.GET.get('host')
         if host_filter:
