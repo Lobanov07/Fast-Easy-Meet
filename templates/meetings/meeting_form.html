@@ -25,6 +25,38 @@
         flex-direction: column;
     }
 
+    .participants-list {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: #fff;
+    }
+
+    .participants-list label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+        color: #555;
+    }
+
+    .participants-list ul {
+        list-style-type: none;
+        padding-left: 0;
+        margin: 0;
+    }
+
+    .participants-list li {
+        padding: 5px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .participants-list li:last-child {
+        border-bottom: none;
+    }
+
     .form-group {
         margin-bottom: 15px;
     }
@@ -47,8 +79,8 @@
     }
 
     .form-group textarea {
-        rows: 12; /* Задаем фиксированную высоту */
-        resize: none; /* Запрет на изменение размера */
+        rows: 12; 
+        resize: none; 
     }
 
     .btn-save {
@@ -105,9 +137,11 @@
             {{ form.agenda }}
         </div>
 
+        <div class="form-group">
+            <label>Участники:</label>
+        </div>
         {% if object %}
             <div class="participants-list">
-                <label>Участники:</label>
                 <ul>
                     {% for participant in object.participants.all %}
                         <li>{{ participant }}</li>

@@ -2,40 +2,29 @@ from datetime import timedelta, datetime
 from django.utils import timezone
 
 
-def generate_possible_times(preferred_date):
-    """generate_possible_times."""
+def find_time(schedules, preferred_date):
     possible_times = []
 
-    start_of_day = datetime.combine(
-        preferred_date, datetime.min.time()
-        )
+    start_of_day = datetime.combine(preferred_date, datetime.min.time())
+    start_of_day = timezone.make_aware(start_of_day, timezone.get_current_timezone())
 
-    start_of_day = timezone.make_aware(
-        start_of_day, timezone.get_current_timezone()
-        )
+    for i in range(0, 24):
+        start_time = start_of_day + timedelta(hours=i)
+        end_time = start_time + timedelta(hours=1)
+        possible_times.append((start_time, end_time))
 
-    for i in range(7, 23):
-        possible_times.append(start_of_day + timedelta(hours=i))
+    bids = {f"{slot[0].strftime('%H:%M')}-{slot[1].strftime('%H:%M')}": 0 for slot in possible_times}
 
-    return possible_times
+    for participant, participant_schedules in schedules.items():
+        for schedule in participant_schedules:
+            for slot_start, slot_end in possible_times:
+                if schedule.start_time <= slot_start and schedule.end_time >= slot_end:
+                    bids[f"{slot_start.strftime('%H:%M')}-{slot_end.strftime('%H:%M')}"] += 1
 
+    best_slot = min(bids, key=bids.get)
 
-def count_available_participants(time, schedules):
-    """count_available_participants."""
-    available_participants = 0
+    best_start_time = datetime.strptime(best_slot.split('-')[0], "%H:%M")
 
-    for schedule in schedules.values():
-        for schedule_item in schedule:
+    best_time = start_of_day.replace(hour=best_start_time.hour, minute=best_start_time.minute)
 
-            local_start_time = timezone.localtime(
-                schedule_item.start_time, timezone.get_current_timezone()
-                )
-
-            local_end_time = timezone.localtime(
-                schedule_item.end_time, timezone.get_current_timezone()
-                )
-
-            if not (local_start_time <= time < local_end_time):
-                available_participants += 1
-
-    return available_participants
+    return best_time
