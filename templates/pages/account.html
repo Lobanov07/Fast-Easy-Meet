@@ -180,7 +180,11 @@
             {% else %}
               ⚪
             {% endif %}
-            {% if meeting.agenda|length > 10 %}
+            {% if not meeting.date_time %}
+            Нет даты - {{ meeting.agenda|slice:":10" }}... Организатор: 
+            <a href="{% url 'pages:profile' meeting.host %}" style="text-decoration: none;"> {{ meeting.host }}</a>
+            (Статус: {{ meeting.status }})
+            {% elif meeting.agenda|length > 10 %}
               {{ meeting.date_time }} - {{ meeting.agenda|slice:":10" }}... Организатор: 
               <a href="{% url 'pages:profile' meeting.host %}" style="text-decoration: none;"> {{ meeting.host }}</a>
               (Статус: {{ meeting.status }})
