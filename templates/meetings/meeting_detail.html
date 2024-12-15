@@ -24,6 +24,14 @@
                 {% endif %}
             </p>
 
+            <p><strong>Предпочтительная дата встречи:</strong> 
+                {% if meeting.preferred_date %}
+                    {{ meeting.preferred_date }}
+                {% else %}
+                    Дата ещё не известна
+                {% endif %}
+
+            
             <p><strong>Статус:</strong> {{ meeting.get_status_display }}</p>
 
             <p><strong>Повестка:</strong></p>
@@ -47,7 +55,7 @@
             </div>
         </div>
     </div>
-    {% if meeting.host == request.user %}
+    {% if meeting.host == request.user or request.user.is_staff %}
     <div class="meeting-actions">
         <button id="copy-code" class="btn-save green">Скопировать код</button>
         <button id="generate_time_button" class="btn-save green">Сгенерировать время</button>

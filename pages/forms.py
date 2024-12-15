@@ -9,13 +9,22 @@ CustomUser = get_user_model()
 class MeetingEditForm(forms.ModelForm):
     class Meta:
         model = Meeting
-        fields = ['title', 'status', 'agenda']
+        fields = ['title', 'status', 'agenda', 'preferred_date']
+        widgets = {
+                "preferred_date": forms.widgets.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={"type": "date", "style": "resize: none; height: 50px;"}
+            ),
+           }
 
 
 class MeetingCreateForm(forms.ModelForm):
     class Meta:
         model = Meeting
-        fields = ['title', 'agenda']
+        fields = ['title', 'agenda', 'preferred_date']
+        widgets = {
+            'preferred_date': forms.DateInput(attrs={'type': 'date'}),
+        }
 
 
 class ScheduleForm(forms.ModelForm):
